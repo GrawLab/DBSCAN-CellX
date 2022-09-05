@@ -1,5 +1,5 @@
 # DBSCAN-CellX
-<img src="Logo.jpg" width="100" height="100">
+<img src="Logo.jpg" width="100" height="200">
   
 DBSCAN-CellX is a clustering and positional classification tool espacially designed for cell cultures. Made by the AG Graw, Bioquant Heidelberg.
 
