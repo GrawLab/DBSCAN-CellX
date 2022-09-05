@@ -1,0 +1,26 @@
+# pyproject.toml
+
+[build-system]
+requires      = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dbscan-cellx"
+version = "0.0.1"
+description = "DBSCAN-CellX by AG Graw"
+readme = "README.md"
+authors = [{ name = "Pascal Lukas", email = "pascal.lukas@stud.uni-heidelberg.de" }]
+license = { file = "LICENSE" }
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+]
+dependencies = [
+    "pandas",
+    "scipy",
+    'numpy',
+    "sklearn",
+    "argparse"
+]
+
