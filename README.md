@@ -75,7 +75,7 @@ C:\Users\USER-NAME\... > python -m dbscan_cellx -f "C:\Users\USER-NAME\file.csv"
 ```
 ## Required Data Structure
 To fully utilze DBSCAN-CellX thorugh this application certain data structure reqeuirments have to be met. The table has to consits of at least 4 columns depicting, a unique Image_ID, Cell ID, X and Y position.Each row represents a unique cell. The columns of Image_ID refers to a unique ID for each image remaining unchaged for each cell i a given image. The Cell ID is a unique ID for each cell in a given image.Both Image ID and Cell ID begin at 1 incrementing by 1 by each row. The data strucutre is comparable to the data output of CellProfiler (Stirling DR; 2021).
-
+![My Image](Data_structure.PNG)
 
 
 
