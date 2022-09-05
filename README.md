@@ -77,6 +77,25 @@ C:\Users\USER-NAME\... > python -m dbscan_cellx -f "C:\Users\USER-NAME\file.csv"
 To fully utilze DBSCAN-CellX thorugh this application certain data structure reqeuirments have to be met. The table has to consits of at least 4 columns depicting, a unique Image_ID, Cell ID, X and Y position.Each row represents a unique cell. The columns of Image_ID refers to a unique ID for each image remaining unchaged for each cell i a given image. The Cell ID is a unique ID for each cell in a given image.Both Image ID and Cell ID begin at 1 incrementing by 1 by each row. The data strucutre is comparable to the data output of CellProfiler (Stirling DR; 2021).
 ![My Image](Data_structure.PNG)
 
+## Data ouput
+DBSCAN-CellX outputs a .csv file with the same name as the input file and the file name extension DBSCAN_CellX_output. The main output results in four addtional columns and if the user specified the Edge Detection a fith column is generated. 
+
+| Output | Description |
+| --- | --- |
+| Cluster_ID | A unique ID for each defined cluster per image. the noise cells are all clustered with the "-1" ID |
+| Cell_in_Image | The number of cells counted in the whole image per image | 
+| Cells_in_Cluster | The number of cells in a given cluster per image | 
+| Cluster_Position | The classification of a single cell per image into noise, edge or center | 
+| Edge_Degree (Optional) | The number corresponds in which degree a single cell is relative to the edge of a given image. "0" always corresponds to noise cell. The higher the number the more center a cell is located in a given cluster  |
+
+If the user specified to save a seperate paramters list the output generated a single .csv file corresponding to the results from a given input file.
+
+| Output | Description |
+| --- | --- |
+| Image_ID | A unique ID for each image input in the original .csv file |
+| n_min | The calculated optimal n_min paramter for the DBSCAN algorithm per image | 
+| Epsilon | The calculated optimal Epsilon paramter for the DBSCAN algorithm per image |
+
 
 
 
