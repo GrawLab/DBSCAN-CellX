@@ -95,7 +95,7 @@ If the user specified to save a seperate paramters list the output generated a s
 | Image_ID | A unique ID for each image input in the original .csv file |
 | n_min | The calculated optimal n_min paramter for the DBSCAN algorithm per image | 
 | Epsilon | The calculated optimal Epsilon paramter for the DBSCAN algorithm per image |
-
+![My Image2](Data_output.PNG)
 
 
 
