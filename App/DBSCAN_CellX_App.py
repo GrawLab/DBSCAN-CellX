@@ -39,7 +39,7 @@ def main():
 def home():
     st.title("DBSCAN-CellX - Homepage")
     imagelogo = Image.open('./Images/Logo.jpg')
-    st.image(imagelogo, caption='Logo')
+    st.image(imagelogo,  width=300)
 
     st.markdown('DBSCAN-CellX is a clustering and positional classification tool espacially designed for cell cultures (Quelle).'
                 "This tool utilzes the original DBSCAN algorithm from Sander, J., et. al (Sander, J. et al., 1998) to determine unique clusters a given cell population."
