@@ -38,6 +38,30 @@ The other option is to call the main function through a terminal. As long as the
 ```
 C:\Users\USER-NAME\... > python -m dbscan_cellx [- parameters]
 ```
+The last option to run DBSCAN-CellX is through the App which is explained further below.
+
+### App
+To use the App, the user has to navigate theri current directory into the App directory. After the installation of the conda environment and the activation of said environment the user can start the App thorugh:
+```
+C:\Users\USER-NAME\App> streamlit run DBSCAN_CellX_App.py
+```
+Now the default browser should open automatically and the App starts running. If not, please copy the Local URL posted in the terminal and open it in a browser. Futher usage instructions of the App are found in the App itself.
+
+## Parameters
+As mentioned before the DBSCAN-CellX package has a couple of paramters which the user can change and/or provide. Whether the user uses the package inside the a Pythoin script or the terminal the function call for changing the paramters differs.
+
+| Parameter | Description | Terminal Flag | Default |
+| --- | --- | --- | --- |
+| files | List of files to input in .csv format | -f --files | - |
+| save | Full directory path to the save folder | -sa --save | - |
+| pixel_ration | The ratio between the pixels/microns | -p --pixel_ration | - |
+| size_x | The full resolution of microns in X direction (in Microns) | -x --size_x | - |
+| size_y | The full resolution of microns in Y direction (in Microns) | -y --size_y | - |
+| edge_mode | A boolean input if a seperate Edge Detection should be performed | -e --edge_mode | 1 |
+| angle_paramter | Int input of the full angle for the edge correction | -a --angle_paramter | 140 |
+| save_parameter | Boolean input if a seperate list should be saved containing the calculated nmin and epsilon parameters | -sp --save_parameter | 1 |
+
+
 
 
 
