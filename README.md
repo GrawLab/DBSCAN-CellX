@@ -18,10 +18,16 @@ After instalaltion the package should be fully installed inside the opened envir
 ### App
 To install the App the easiest way is to install a new (conda) environment with the corresponding environment list. The installation of the whole APp with all its dependencies can be done by downloading the whole App folder. Inside the folder is a file called "env.txt". To install a new fresh conda environment with this file please use the follwing code:
 ```
-conda create --name ENV-NAME --file env.txt
+conda create --name ENV-NAME -f app_env.yml
 ```
 Please make sure that the path to the "env.txt" file is set or the current directory is located inside the App folder. 
 After the installation is finished, the user can now activate the newly installed conda environment.
+```
+conda activate ENV-NAME 
+```
+
+Please make sure that after the conda environment is installed to also install the Package into the same environment as mentioned above.
+
 
 ## Usage
 ### DBSCAN-CellX Package
