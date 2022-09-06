@@ -22,7 +22,7 @@ C:\Users\USER-NAME\dbscan-cellx> python -m pip install -e .
 After instalaltion the package should be fully installed inside the opened environment. 
 
 ### App
-To install the App the easiest way is to install a new (conda) environment with the corresponding environment list. The installation of the whole APp with all its dependencies can be done by downloading the whole App folder. Inside the folder is a file called "env.txt". To install a new fresh conda environment with this file please use the follwing code:
+To install the App the easiest way is to install a new (conda) environment with the corresponding environment list. The installation of the whole APp with all its dependencies can be done by downloading the whole App folder. Inside the folder is a file called "app_env.yml". To install a new fresh conda environment with this file please use the follwing code:
 ```
 conda env create --name ENV-NAME -f app_env.yml
 ```
