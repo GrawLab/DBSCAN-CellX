@@ -77,7 +77,6 @@ twine==4.0.1
 typing-extensions==4.3.0
 tzdata==2022.2
 tzlocal==4.2
-UNKNOWN @ git+https://github.com/PasLukas/DBSCAN-CellX.git@c166f5b96e0d59dde54c31aeee87cd88c2ee3174
 urllib3==1.26.12
 validators==0.20.0
 virtualenv==20.16.4
