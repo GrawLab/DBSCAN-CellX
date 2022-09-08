@@ -22,18 +22,16 @@ C:\Users\USER-NAME\dbscan-cellx> python -m pip install -e .
 After instalaltion the package should be fully installed inside the opened environment. 
 
 ### App
-To install the App the easiest way is to install a new (conda) environment with the corresponding environment list. The installation of the whole APp with all its dependencies can be done by downloading the whole App folder. Inside the folder is a file called "app_env.yml". To install a new fresh conda environment with this file please use the follwing code:
+To install the App the easiest way is to use the pip installer with the requirements.txt found in the App folder. Before installing the required dependencies you have to make sure you have a functional version of git installed.
 ```
-conda env create --name ENV-NAME -f app_env.yml
+git --version
 ```
-Please make sure that the path to the "env.txt" file is set or the current directory is located inside the App folder. 
-After the installation is finished, the user can now activate the newly installed conda environment.
+If git is not installed beforehand please make sure it is.
+Afterwards open any terminal with python installed and change your current directory to the App directory "\User\...\DBSCAN-CellX-main\App>". Now run the followingto install all dependencies
 ```
-conda activate ENV-NAME 
+pip install -r requirements.txt
 ```
-
-Please make sure that after the conda environment is installed to also install the Package into the same environment as mentioned above.
-
+Now you should have installed everythin which is needed
 
 ## Usage
 ### DBSCAN-CellX Package
@@ -53,9 +51,13 @@ C:\Users\USER-NAME\... > python -m dbscan_cellx [- parameters]
 The last option to run DBSCAN-CellX is through the App which is explained further below.
 
 ### App
-To use the App, the user has to navigate theri current directory into the App directory. After the installation of the conda environment and the activation of said environment the user can start the App thorugh:
+To use the App, the user has to navigate their current directory into the App directory. After the installation the user can start the App thorugh:
 ```
-C:\Users\USER-NAME\App> streamlit run DBSCAN_CellX_App.py
+python -m streamlit run DBSCAN_CellX_App.py # Windows
+
+or
+
+streamlit run DBSCAN_CellX_App.py # Unix
 ```
 Now the default browser should open automatically and the App starts running. If not, please copy the Local URL posted in the terminal and open it in a browser. Futher usage instructions of the App are found in the App itself.
 
