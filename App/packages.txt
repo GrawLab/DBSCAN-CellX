@@ -1,1 +1,2 @@
-libtk8.6.so
+libtk8.6
+install tk
