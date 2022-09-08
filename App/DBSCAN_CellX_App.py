@@ -5,6 +5,7 @@ import plotly.express as px
 import numpy as np
 import csv
 import subprocess
+import _tkinter
 import tkinter as tk
 from tkinter import filedialog
 from pathlib import Path
