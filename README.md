@@ -105,7 +105,7 @@ Please note that the first two columns of the table always have to be Image_ID a
 In the app, the original images can be additionally provided as an input to visualized the performed analysis in comparison to the original data.
 
 ## Ouput
-DBSCAN-CellX generates a .csv file as an output with the same name as the input file, and the file name extension DBSCAN_CellX_output. The main output results in four addtional columns that are added to the table. If the user additionally specifies to calculated the Edge-Degree Determination, a fith column is containing the Edge-Degree is added as well. 
+DBSCAN-CellX generates a .csv file as an output with the same name as the input file, and the file name extension DBSCAN_CellX_output. The main output results in four addtional columns that are added to the table. If the user additionally specifies to calculated the Edge-Degree Determination, a fifth column containing the Edge-Degree is added as well. 
 
 | Output | Description |
 | --- | --- |
