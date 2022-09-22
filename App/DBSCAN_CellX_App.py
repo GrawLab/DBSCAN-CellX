@@ -277,7 +277,6 @@ def page_settings():
                     st.write("*Uncorrected Cluster Positions:* Allow output of uncorrected Culster Postions in DBSCAN-CellX Output File")
 
 def page_test():
-    df = st.session_state.df
     @st.cache
     def run_DBSCAN(data, save, pixel_ratio, X, Y, edge_mode, angle_paramter, save_para, keep_uncorr):
         dbscan_cellx.main([data], save, pixel_ratio, X,
@@ -287,6 +286,7 @@ def page_test():
     if "test_run_counter" not in st.session_state:
             st.session_state.test_run_counter = 0
     if st.button('Run Test'):
+        df = st.session_state.df
         st.session_state.test_run_counter = st.session_state.test_run_counter+1
         df_sub = df[df.iloc[:, 0] == st.session_state.input_data_options]
         save_path = str(st.session_state.text2) + st.session_state.file[:-4] + "_test_data_"+str(
