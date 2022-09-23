@@ -34,7 +34,7 @@ To install the App, the easiest way is to use the pip installer with the *requir
 ```
 git --version
 ```
-If *git* is not installed, please install it before continuing (see Link/to/git/installation/guide).
+If *git* is not installed, please install it before continuing (see [How to install Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)).
 
 Afterwards open a terminal, navigate to the downloaded app-folder "\User\...\DBSCAN-CellX-main\App>" and run the following command:
 ```
