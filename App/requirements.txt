@@ -1,6 +1,6 @@
 altair
 attrs
-backports.zoneinfo
+backports.zoneinfo;python_version<"3.9"
 bleach
 blinker
 cachetools
