@@ -15,6 +15,12 @@ The package relies on the well-known and frequently used density-based clusterin
 This repository consists of two parts. The folder *dbscan-cellx* contains the actual Python package, which comprises all the relevant functions and algorithms. The package has to be downloaded and installed locally as detailed below. The folder called *App* holds the App-based graphical-user-interface, called *DBSCAN_CellX_App.py* developed with Streamlit. The *dbscan-cellx* package can also be run independently of the app.
 
 ## Installation
+### Requirements
+To install the Python package of DBSCAN-CellX the user must have Python installed. To check if Python is installed use:
+```
+python --version
+```
+Compatible Python versions are Python >= 3.8 
 ### (a) Package
 The Python package of DBSCAN-CellX is a standalone package which has to be installed manually and was developed under python 3.8. All required dependencies are installed automatically with the installation of the package itself. After downloading,  the user has to open a terminal, navigate to the *dbscan-cellx*-folder and install the package via the following command:
 
@@ -23,7 +29,7 @@ C:\Users\USER-NAME\dbscan-cellx> python -m pip install -e .
 ```
 After installation the package should be fully usable inside the opened environment (see below). *If the user wants to use the the package in combination with the app-based GUI, the package has to be installed into the App environment (delete?).* 
 
-### (b) Graphical-User-Interface (App)
+### (b) Graphical-User-Interface (App) (Recommended)
 To install the App, the easiest way is to use the pip installer with the *requirements.txt*-file found in the App-folder. Before installing the required dependencies you have to make sure that you have a functional version of *git* installed.
 ```
 git --version
@@ -34,7 +40,7 @@ Afterwards open a terminal, navigate to the downloaded app-folder "\User\...\DBS
 ```
 pip install -r requirements.txt
 ```
-This will install the app with all its dependencies and connect it to the DBSCAN-CellX. *Alternatively, installation can be performed by ....*
+This will install the app with all its dependencies and the DBSCAN-CellX package.
 
 ## Getting to work
 ### Using the DBSCAN-CellX package
