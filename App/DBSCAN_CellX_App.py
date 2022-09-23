@@ -291,16 +291,27 @@ def page_test():
         df_sub = df[df.iloc[:, 0] == st.session_state.input_data_options]
         save_path = str(st.session_state.text2) + st.session_state.file[:-4] + "_test_data_"+str(
             st.session_state.test_run_counter) + ".csv"
-        st.write(save_path)
         df_sub.to_csv(save_path, sep=';', index=False)
         st.write('Run DBSCAN-CellX')
         run_DBSCAN(save_path, st.session_state.text2,
                    st.session_state.pixel_rat, st.session_state.X, st.session_state.Y, st.session_state.edge_mode, st.session_state.angel, st.session_state.save_para, st.session_state.keep_uncorr)
         if st.session_state.agree_log_save == 1:
-            log_df = pd.DataFrame({"Pixel Ratio": [st.session_state.pixel_rat], "X-Dimension":[st.session_state.X],
-                                   "Y-Dimension": [st.session_state.Y], "Edge-Degree Detection": [st.session_state.edge_mode], "Correction Angle": [st.session_state.keep_uncorr], "Uncorrected_Cluster_Positions": [st.session_state.keep_uncorr]})
-            output_name_log = save_path[:save_path.find(str(st.session_state.test_run_counter))-1] + '_log_files_' + \
+            if st.session_state.edge_mode:
+                edge_mode = "Enabled"
+            else:
+                edge_mode = "Disabled"
+            if st.session_state.keep_uncorr:
+                keep_uncorr = "Enabled"
+            else:
+                keep_uncorr = "Disabled"
+
+
+            log_df = pd.DataFrame({"Pixel Ratio": [str(st.session_state.pixel_rat)], "X-Dimension":[str(st.session_state.X)],
+                                   "Y-Dimension": [str(st.session_state.Y)], "Edge-Degree Detection": [str(edge_mode)], "Correction Angle": [str(st.session_state.angel)], "Uncorrected_Cluster_Positions": [str(keep_uncorr)]})
+            save_path
+            output_name_log = save_path[:save_path.find(str("test_data_"))+9] + '_log_files_' + \
                 str(st.session_state.test_run_counter) + ".csv"
+            output_name_log
             log_df.to_csv(output_name_log, sep=';', index=False)
   
     
@@ -371,9 +382,6 @@ def page_test():
                     selec_test_data1, sep=";")
                 selec_log_file_df1 = pd.read_csv(selec_log_file1, sep=";")
                 
-        
-
-
         test_tab1, test_tab2, test_tab3, test_tab4, test_tab5 = st.tabs(
             ["Test Results", "Test Data Table", "Compare Cluster Position Classification", "Compare Test Parameters", "Overlay Microscopy"])
 
@@ -384,7 +392,8 @@ def page_test():
                     st.write("No Parameter List available")
                 else:
                     st.write("Parameter List:")
-                    st.dataframe(selec_log_file_df1.T)
+                    logs = selec_log_file_df1.astype(str)
+                    st.dataframe(logs.T)
 
             with col2:
                 #df_sub_output = pd.read_csv(output_name, sep=";")
@@ -401,9 +410,10 @@ def page_test():
                     st.write("No Parameter List available")
                 else:
                     st.write("Parameter List:")
-                    st.dataframe(selec_log_file_df1.T)
+                    logs = selec_log_file_df1.astype(str)
+                    st.dataframe(logs.T)
             with col2:
-                st.dataframe(selec_test_data_df1)
+                    st.dataframe(selec_test_data_df1)
 
         with test_tab3:
 
@@ -456,7 +466,9 @@ def page_test():
                                           y=selec_test_data_df1["Y"],
                                           color=selec_test_data_df1["Cluster_Position"])
                         st.plotly_chart(fig1, use_container_width=True)
-                        st.dataframe(selec_log_file_df1)
+                        st.write("Parameter List:")
+                        logs = selec_log_file_df1.astype(str)
+                        st.dataframe(logs.T)
 
 
 
@@ -487,7 +499,9 @@ def page_test():
                                            y=selec_test_data_df2["Y"],
                                           color=selec_test_data_df2["Cluster_Position"])
                     st.plotly_chart(fig2, use_container_width=True)
-                    st.dataframe(selec_log_file_df2)
+                    st.write("Parameter List:")
+                    logs = selec_log_file_df2.astype(str)
+                    st.dataframe(logs.T)
             else:
                 st.write("To compare different paramters please enable *Keep Log-Files of Parameters* in the Advanced Settings")
 
