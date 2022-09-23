@@ -413,7 +413,7 @@ def page_test():
                     logs = selec_log_file_df1.astype(str)
                     st.dataframe(logs.T)
             with col2:
-                    st.dataframe(selec_test_data_df1)
+                st.dataframe(selec_test_data_df1)
 
         with test_tab3:
 
@@ -511,44 +511,41 @@ def page_test():
             st.subheader("Overlaying Microscopy Data")
             st.markdown("If the test run was succesfull the user has the option to overlay the output DBSCAN classification with the original microscopy image file."
             " The image file can for example be a brightfield image of the original cell culture. To input the image file just upload the corresponding image file.")
-            agree = st.checkbox('Overlay Microscopy Image')
-            if agree:
-                uploaded_file2 = st.file_uploader(
-                    "Choose a file", key="Uploader_Microscopy")
-                if uploaded_file2 is not None:
-                
-                    data = np.array(uploaded_file2)
-                    #save_path = st.session_state.text2 + \
-                    #    st.session_state.file[:-4] + "_test_data_"+".csv"
-                    #output_name = save_path[:-4] + 'DBSCAN_CELLX_output.csv'
-                    #df_sub_output = pd.read_csv(output_name, sep=";")
-                    fig, ax = plt.subplots(1)  # , figsize = (13,18))
-                    image = io.imread(uploaded_file2)
-                    plt.imshow(image, cmap='gray')
-                    plt.axis('on')
-                    plt.margins(x=0, y=0)
-                    colors = {'edge': 'red', 'center': 'green',
-                              'noise': 'blue'}
-                    plt.scatter(selec_test_data_df1["X"],
-                                selec_test_data_df1["Y"], s=10, c=selec_test_data_df1["Cluster_Position"].map(colors))
-                    st.pyplot(fig, use_container_width=True)
+            uploaded_file2 = st.file_uploader(
+                "Choose a file", key="Uploader_Microscopy")
+            if uploaded_file2 is not None:
+            
+                data = np.array(uploaded_file2)
+                #save_path = st.session_state.text2 + \
+                #    st.session_state.file[:-4] + "_test_data_"+".csv"
+                #output_name = save_path[:-4] + 'DBSCAN_CELLX_output.csv'
+                #df_sub_output = pd.read_csv(output_name, sep=";")
+                fig, ax = plt.subplots(1)  # , figsize = (13,18))
+                image = io.imread(uploaded_file2)
+                plt.imshow(image, cmap='gray')
+                plt.axis('on')
+                plt.margins(x=0, y=0)
+                colors = {'edge': 'red', 'center': 'green',
+                          'noise': 'blue'}
+                plt.scatter(selec_test_data_df1["X"],
+                            selec_test_data_df1["Y"], s=10, c=selec_test_data_df1["Cluster_Position"].map(colors))
+                st.pyplot(fig, use_container_width=True)
 
 def page_run():
     st.subheader("Running DBSCAN-CellX")
     st.markdown("If the user is happy with the test results, the user can now run DBSCAN-CellX on all the desired files. The input paramters used are the ones submitted before."
     " If the user wants to change the paramters for the full run, just change the paramters and submit them. After the upload the user can run DBSCAN-CellX and is greeted with an animation if the run was succesfull.")
-    agree2 = st.checkbox('Run Full')
+
     if "first_file" not in st.session_state:
         st.session_state.first_file = None
-    if agree2:
-        uploaded_file3 = st.file_uploader(
-            "Choose a file", key="Uploader_All_Files",accept_multiple_files = True)
-        if uploaded_file3 is not None:
-            file_names = []
-            for i in uploaded_file3:
-                name_file = i.name
-                full_name = st.session_state.text + name_file
-                file_names.append(str(full_name))
+    uploaded_file3 = st.file_uploader(
+        "Choose a file", key="Uploader_All_Files",accept_multiple_files = True)
+    if uploaded_file3 is not None:
+        file_names = []
+        for i in uploaded_file3:
+            name_file = i.name
+            full_name = st.session_state.text + name_file
+            file_names.append(str(full_name))
     if st.button('Run DBSCAN-CellX'):
         for i in file_names:
             run_DBSCAN(i, st.session_state.text2,
