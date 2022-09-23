@@ -47,24 +47,21 @@ def home():
     imagelogo = Image.open('./Images/Logo.jpg')
     st.image(imagelogo,  width=300)
 
-    st.markdown('DBSCAN-CellX is a clustering and positional classification tool espacially designed for cell cultures (Quelle).'
-                "This tool utilzes the original DBSCAN algorithm from Sander, J., et. al (Sander, J. et al., 1998) to determine unique clusters a given cell population."
-                "Additional algorithms allow a clear and robust classification of noise, edge and center cells."
-                )
+    st.markdown("DBSCAN-CellX is a clustering and positional classification tool especially designed for cell culture experiments(Quelle). This tool relies on the original DBSCAN algorithm from Sander, J., et. al(Sander, J. et al., 1998) to determine individual clusters and additionally allow the robust classification of cells in noise, edge and center cells dependent on their relative location within the clusters.")
 
     st.subheader("Data Requirments")
-    st.markdown("To fully utilze DBSCAN-CellX thorugh this application certain data structure reqeuirments have to be met. The table has to consits of at least 4 columns depicting, a unique Image_ID, Cell ID, X and Y position."
-    "Each row represents a unique cell. The columns of Image_ID refers to a unique ID for each image remaining unchaged for each cell i a given image. The Cell ID is a unique ID for each cell in a given image."
-                "Both Image ID and Cell ID begin at 1 incrementing by 1 by each row. The data strucutre is comparable to the data output of CellProfiler (Stirling DR; 2021).")
+    st.markdown("To run DBSCAN-CellX on your data, the input file has to consist of a table with at least 4 columns depicting, (1) a unique Image_ID *ImageNumber*, (2) a unique *Cell ID*, as well as (3) the *X*- and *Y*-position of the cell. Both *ImageNumber* and *CellID* are integers. The data structure is analogous to the output provided by CellProfiler (Stirling DR; 2021) or other image analysis tools.")
     
     image = Image.open('./Images/Data_structure.PNG')
     st.image(image, caption='Required Data Structure')
 
     st.subheader("Using this App")
-    st.markdown("Is App is a easy to use GUI to simplify the usage of the Python package DBSCAN-CellX and to directly visualize the output, while also providing the users possibilieties to change paramters on the fly."
-    " The next pages of this App can be found in the sidebar. The page Running DBSCAN-CellX is the main part of the App. As the name suggests it allows the user to input theri data and run DBSCAN-CellX."
-    "It furhtermore allows to run a seperate test-run of DBSCAN-CellX to ensure that the given input parameters output satifying results."
-    "The last page called Visualization allows the user to directly visualize the output data in a image wise depiction of cell positions in a cathersian grid, while also allowing the customazation of the vsiulaization.")
+    st.markdown("The App provides a user-friendly GUI to simplify the usage of the Python package DBSCAN-CellX." 
+    "The App consits of several pages. On the *Input Data* page the user can upload a single files, which will be used for preliminary testing."
+    "The *Settings* page allows the user to input (mandatory) about the data files, as well as change parameters of the DBSCAN-CellX package."
+    "On the *Test Area* page the user can now run a preliminary test run of DBSCAN-CellX and comapre different results."
+    "*Run DBSCAN-CellX* and *Visualization* allow a complete run of DBSCAN-CellX and the following data visualization."
+    "Further information and details can be found under https://github.com/PasLukas/DBSCAN-CellX")
 
     st.subheader("Data Output")
     st.markdown("DBSCAN-CellX outputs a .csv file with the same name as the input file and the file name extension DBSCAN_CellX_output. The main output results in four addtional columns and if the user specified the Edge Detection a fith column is generated. "
@@ -103,8 +100,8 @@ def page_data():
 
 
         st.subheader("Data input")
-        st.markdown("Please input a TEST file. This file can be a single input file in .csv format structured as mentioned before."
-        "The user can input the file via Drag and Drop or browse it youself.")
+        st.markdown("Please input a preliminary test file."
+                    "Files can be added via Drag and Drop or browsing through the system.")
         if "uploaded_file" not in st.session_state:
             st.session_state.uploaded_file = "Leer"
         
@@ -123,8 +120,9 @@ def page_data():
         if st.session_state.uploaded_file is not None:
             last_file = uploaded_file.name
     
-            st.write("Last Input:",last_file)
-            st.header("Input Data")
+
+    st.header("Input Data")
+    st.markdown("This panel allows for easy data visulaization. The chosen image file will be used of the preliminary test run.")
     if st.session_state.uploaded_file is not None:
         if "df" not in st.session_state:
             st.session_state.df = "Leer"
@@ -139,7 +137,7 @@ def page_data():
                 if "input_data_options" not in st.session_state:
                     st.session_state.input_data_options = 1
                 st.session_state.input_data_options = st.selectbox(
-                                'Image Number',
+                                'Image ID',
                                 (list(set(df.iloc[:,0]))), key="Input_data_options")
                 df_sub_IM = df[df["ImageNumber"] ==
                                st.session_state.input_data_options]
@@ -163,12 +161,8 @@ def page_data():
 
 def page_settings():
     st.subheader("Changing Paramters")
-    st.markdown("In this part the user can change and input paramters. The three input paramters Pixel-Ratio, Pixels in X-Direction and Pixels in Y-Direction must be input by the user."
-                " The user also has to define if the measurments are provided as Microns or Pixels."
-                "       "
-                "The option Correction Angle refers to the exclusion angle which determines when edge cells are still considered edge or center."
-                "The user can also allow a seperate Edge-Degree detection (Causing higher computational times) and if a parameter list of the calculated paramters n_min and Epsilon should be saved in the save folder.")
-
+    st.markdown("Please specify the analytical settings. The Micron-to-Pixel Ratio, as well as the dimensions of the image in X- and Y-Direction must be specified by the user. Please specify if measurements were provided in pixels or microns. The default threshold angle for performing Edge-Correction analysis is set to 140. Please select if additionally parameters should be set in the *Advanced Settings*.")
+    st.markdown("**Note:** Always submit changes in the Settings with the *Submit* button.")
     
     def pixel_input():
         if "pixel_rat" not in st.session_state:
@@ -282,7 +276,7 @@ def page_test():
         dbscan_cellx.main([data], save, pixel_ratio, X,
                           Y, edge_mode, angle_paramter, save_para, keep_uncorr)
     st.subheader("Test Run")
-    st.write("Note: Running a Test Run creates and saves a seperate *test_data* file and *DBSCAN_CellX_output* basedon the input data in the save directory. Depending on the chosen Advanced Setting furhter files may be created.")
+    st.write("**Note:** Running a Test Run creates and saves a seperate *test_data* file and *DBSCAN_CellX_output* basedon the input data in the save directory. Depending on the chosen *Advanced Settings* furhter files may be created.")
     if "test_run_counter" not in st.session_state:
             st.session_state.test_run_counter = 0
     if st.button('Run Test'):
@@ -318,7 +312,7 @@ def page_test():
     if st.session_state.test_run_counter != 0:
         st.subheader("Compare Test Results")
         st.write("Choose between different options to compare test results to.")
-        st.write("Use the Dropdown-Menu to choose a specific Test-File. If a Log-File was created it will show the log-file table.")
+        st.write("Use the Dropdown-Menu to choose a specific Test-File. ")
         save_path = str(st.session_state.text2) + st.session_state.file[:-4] + "_test_data_"+str(
             st.session_state.test_run_counter) + ".csv"
         output_name = save_path[:-4] + '_DBSCAN_CELLX_output.csv'
@@ -386,12 +380,13 @@ def page_test():
             ["Test Results", "Test Data Table", "Compare Cluster Position Classification", "Compare Test Parameters", "Overlay Microscopy"])
 
         with test_tab1:
+            st.subheader("Show DBSCAN-CellX Results")
             col1,col2,col3 = st.columns([1,2,1])
             with col1:
                 if not selec_log_file1:
                     st.write("No Parameter List available")
                 else:
-                    st.write("Parameter List:")
+                    st.write("**Parameter List:**")
                     logs = selec_log_file_df1.astype(str)
                     st.dataframe(logs.T)
 
@@ -404,40 +399,42 @@ def page_test():
 
 
         with test_tab2:
+            st.subheader("Show DBSCAN-CellX Results")
             col1, col2, col3 = st.columns([1, 2, 1])
             with col1:
                 if not selec_log_file1:
                     st.write("No Parameter List available")
                 else:
-                    st.write("Parameter List:")
+                    st.write("**Parameter List:**")
                     logs = selec_log_file_df1.astype(str)
                     st.dataframe(logs.T)
             with col2:
                 st.dataframe(selec_test_data_df1)
 
         with test_tab3:
-
+            st.subheader("Show DBSCAN-CellX Results (Cluster Position Classification)")
             col1, col2,  = st.columns(2)
             if "Uncorrected_Cluster_Position" in selec_test_data_df1.columns:
                 with col1:
-                    st.write("Uncorrected Cluster Positions")
+                    st.write("**Uncorrected Cluster Positions**")
                     fig = px.scatter(x=selec_test_data_df1["X"],
                                      y=selec_test_data_df1["Y"],
                                      color=selec_test_data_df1["Uncorrected_Cluster_Position"])
                     st.plotly_chart(fig, use_container_width=True)
                 with col2:
-                    st.write("Corrected Cluster Positions")
+                    st.write("**Corrected Cluster Positions**")
                     fig = px.scatter(x=selec_test_data_df1["X"],
                                      y=selec_test_data_df1["Y"],
                                      color=selec_test_data_df1["Cluster_Position"])
                     st.plotly_chart(fig, use_container_width=True)
 
             else:
-                st.write(
+                st.warning(
                     "This Files does not have a *Uncorrected Cluster Classification*. Please enable it inthe Advanced Settings")
             
 
         with test_tab4:
+            st.subheader("Show DBSCAN-CellX Results (Compare *Settings*)")
             col1, col2,  = st.columns(2)
             if st.session_state.agree_log_save == 1:
 
@@ -503,14 +500,13 @@ def page_test():
                     logs = selec_log_file_df2.astype(str)
                     st.dataframe(logs.T)
             else:
-                st.write("To compare different paramters please enable *Keep Log-Files of Parameters* in the Advanced Settings")
+                st.warning("To compare different paramters please enable *Keep Log-Files of Parameters* in the Advanced Settings")
 
     
 
         with test_tab5:
             st.subheader("Overlaying Microscopy Data")
-            st.markdown("If the test run was succesfull the user has the option to overlay the output DBSCAN classification with the original microscopy image file."
-            " The image file can for example be a brightfield image of the original cell culture. To input the image file just upload the corresponding image file.")
+            st.markdown("The user has the option to overlay the output DBSCAN classification with the original microscopy image data. The image file (i.e., original brightfield image in tiff, png, etc) corresponding to the test data set can be uploaded here.")
             uploaded_file2 = st.file_uploader(
                 "Choose a file", key="Uploader_Microscopy")
             if uploaded_file2 is not None:
@@ -533,8 +529,7 @@ def page_test():
 
 def page_run():
     st.subheader("Running DBSCAN-CellX")
-    st.markdown("If the user is happy with the test results, the user can now run DBSCAN-CellX on all the desired files. The input paramters used are the ones submitted before."
-    " If the user wants to change the paramters for the full run, just change the paramters and submit them. After the upload the user can run DBSCAN-CellX and is greeted with an animation if the run was succesfull.")
+    st.markdown("After validating the test run, the user apply DBSCAN-CellX to all files based on the *Settings*. If parameters need to be changed, please don't forget to submit them before starting the analysis. ")
 
     if "first_file" not in st.session_state:
         st.session_state.first_file = None
@@ -562,9 +557,7 @@ def page_run():
 
 def second_page ():
     st.title('Visualize Data')
-    st.markdown("This is the last page of the App. Here the user can fully visualize the output generated by DBSCAN-CellX."
-    " If a test run or a full DBSCAN-CellX run was performed beforehand a example file, which is the first file generated in the beforehand DBSCAN-CellX run, is opened."
-    " If the user wishes to visualize a differet file just upload one single file. the user can choose to filter the output files by column and also change the appearance by changing the coloring paramter.")
+    st.markdown("Here the user can visualise the output generated by DBSCAN-CellX in different ways. The user can choose to filter the output files by column and also change the appearance by changing the colouring parameter.")
     if st.session_state.first_file is not None:
         df_IFN_all = pd.read_csv(st.session_state.first_file, sep=";")
         st.dataframe(df_IFN_all)
