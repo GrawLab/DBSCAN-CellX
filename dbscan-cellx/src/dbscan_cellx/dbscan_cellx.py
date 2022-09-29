@@ -315,8 +315,8 @@ def edit_table(files, save, pixel_list, edge_mode, angel_paramter, save_paramter
             if edge_mode == 1:
                 table = edge(table, pixel_list, angel_paramter)
                 table = table.drop('Ind', axis=1)
-            name = j[:j.find(str("test_data_"))+11]
-
+            #name = j[:j.find(str("test_data_"))+11]
+            name = j[:-4]
             savepath =  name + '_DBSCAN_CELLX_output.csv'
             if save_paramter == 1:
                 savepath_para =  name + "_paramter_list.csv"
