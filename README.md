@@ -80,7 +80,7 @@ As mentioned before, the DBSCAN-CellX package includes parameters which the user
 | files | List of files in *csv*-format | -f --files | - |
 | save | Path to the save-folder | -sa --save | - |
 | pixel_ration | The ratio of pixels per micron | -p --pixel_ration | - |
-| size_x | The full image resolution X-direction (in microns) | -x --size_x | - |
+| size_x | The full image resolution in X-direction (in microns) | -x --size_x | - |
 | size_y | The full image resolution in Y-direction (in microns) | -y --size_y | - |
 | edge_mode | A boolean input if edge-degree should be determined | -e --edge_mode | 1 |
 | angle_parameter | Threshold-angle for the edge correction (as integer in degrees) | -a --angle_parameter | 140 |
