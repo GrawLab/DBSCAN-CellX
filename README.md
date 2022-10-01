@@ -77,14 +77,14 @@ As mentioned before, the DBSCAN-CellX package includes parameters which the user
 
 | Parameter | Description | Terminal Flag | Default |
 | --- | --- | --- | --- |
-| files | List of files to input in .csv format | -f --files | - |
-| save | Full directory path to the save folder | -sa --save | - |
-| pixel_ration | The ratio between the pixels/microns | -p --pixel_ration | - |
-| size_x | The full resolution of microns in X direction (in microns) | -x --size_x | - |
-| size_y | The full resolution of microns in Y direction (in microns) | -y --size_y | - |
-| edge_mode | A boolean input if Edge-Degree should be determined | -e --edge_mode | 1 |
-| angle_parameter | Int input of the full angle for the edge correction (in degrees) | -a --angle_parameter | 140 |
-| save_parameter | Boolean input if a seperate list should be saved containing the calculated nmin and epsilon parameters | -sp --save_parameter | 1 |
+| files | List of files in *csv*-format | -f --files | - |
+| save | Path to the save-folder | -sa --save | - |
+| pixel_ration | The ratio of pixels per micron | -p --pixel_ration | - |
+| size_x | The full image resolution X-direction (in microns) | -x --size_x | - |
+| size_y | The full image resolution in Y-direction (in microns) | -y --size_y | - |
+| edge_mode | A boolean input if edge-degree should be determined | -e --edge_mode | 1 |
+| angle_parameter | Threshold-angle for the edge correction (as integer in degrees) | -a --angle_parameter | 140 |
+| save_parameter | Boolean input if a seperate list should be saved containing the calculated DBSCAN-parameters (*n_min*,*Epsilon*)| -sp --save_parameter | 1 |
 
 Whether the user uses the package inside a Python script (Option 1) or the terminal (Option 2), the actual function call for changing the parameters differs.
 A full example call of all parameters inside a python script (Option 1) by applying dbscan_cellx to *file.csv* which defines a table with the positions of cells within an image of size 938.4 x 565.8 microns^2 in x- and y-dimension obtained at a resolution of 2.9 microns/pixel, will look like:
@@ -126,8 +126,8 @@ If the user specifies to save a seperate parameters list, the output generates a
 | Output | Description |
 | --- | --- |
 | Image_ID | A unique ID for each image input in the original .csv file |
-| n_min | The calculated optimal n_min parameter for the DBSCAN algorithm per image | 
-| Epsilon | The calculated optimal Epsilon parameter for the DBSCAN algorithm per image |
+| n_min | The calculated optimal *n_min*-parameter for the DBSCAN algorithm for each image | 
+| Epsilon | The calculated optimal *Epsilon*-parameter for the DBSCAN algorithm for each image |
 
 
 ![My Image2](Data_output.PNG)
