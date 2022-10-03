@@ -53,7 +53,7 @@ def home():
     imagelogo = Image.open('./Images/Logo.jpg')
     st.image(imagelogo,  width=300)
 
-    st.markdown("DBSCAN-CellX is a clustering and positional classification tool especially designed for cell culture experiments(Quelle). This tool relies on the original DBSCAN algorithm from Sander, J., et. al (1996) to determine individual clusters and additionally allow a robust classification of cells as noise, edge and center cells dependent on their relative location within the clusters.")
+    st.markdown("DBSCAN-CellX is a clustering and positional classification tool especially designed for cell culture experiments(Quelle). This tool relies on the original DBSCAN algorithm from Sander, J., et. al (1996) to determine individual clusters.Additionally, it performs a robust classification of cells as noise, edge and center cells, depending on their relative location within the clusters.")
 
     st.subheader("Data Requirements")
     st.markdown("To run DBSCAN-CellX on your data, the input file has to consist of a table with at least 4 columns depicting, (1) a unique Image_ID (*ImageNumber*), (2) a unique *Cell ID*, as well as (3) the *X*- and *Y*-position of the cell. Both *ImageNumber* and *CellID* are integers. The data structure is analogous to the output provided by CellProfiler (Stirling DR; 2021) or other image analysis tools.")
@@ -63,7 +63,7 @@ def home():
 
     st.subheader("Using this App")
     st.markdown("The App provides a user-friendly GUI to simplify the usage of the Python package DBSCAN-CellX."
-                "The App consists of several pages. On the *Input Data* page the user can upload single files, which will be used for preliminary testing."
+                "The App consists of several pages. On the *Input Data* page, the user can upload single files, which will be used for preliminary testing."
                 " The *Settings* page allows the user to input (mandatory) about the data files, as well as change parameters of the DBSCAN-CellX package."
                 " On the *Test Area* page, the user can now run a preliminary test run of DBSCAN-CellX and compare different results."
                 " *Run DBSCAN-CellX* and *Visualization* allow a complete run of DBSCAN-CellX and the following data visualization."
@@ -85,15 +85,15 @@ def run_DBSCAN(data, save, pixel_ratio, X, Y, edge_mode, angle_paramter, save_pa
 
 def picker_data():
         if "text" not in st.session_state:
-            st.session_state.text = "Data Path"
-        data_path = st.text_input('Data input', st.session_state.text)
+            st.session_state.text = "Input data directory"
+        data_path = st.text_input('Path to data input directory. *', st.session_state.text)
         st.session_state.text = data_path
         return st.session_state.text
 
 def picker_save():
         if "text2" not in st.session_state:
-            st.session_state.text2 = "Save Path"
-        save_path = st.text_input('Save output', st.session_state.text2)
+            st.session_state.text2 = "Output data directory"
+        save_path = st.text_input('Path to data output directory. *', st.session_state.text2)
         st.session_state.text2 = save_path
         return st.session_state.text2
 
@@ -112,11 +112,12 @@ def page_data():
         st.subheader('Folder Picker')
         picker_data()
         picker_save()
+        st.markdown('*Hint: Directory paths must end with "/" in Unix-based systems or "\ " in Windows systems.')
     with col2:
 
         st.subheader("Data input")
         st.markdown("Please input a preliminary test file."
-                    "Files can be added via Drag and Drop or browsing through the system.")
+                    " Files can be added via Drag and Drop or browsing through the system.")
         if "uploaded_file" not in st.session_state:
             st.session_state.uploaded_file = "Leer"
 
@@ -143,16 +144,16 @@ def page_data():
             st.session_state.file = file_name
         st.write("Last Uplodaded File:",st.session_state.file)
         if "file" not in st.session_state:
-            st.session_state.file = "Leer"
+            st.session_state.file = "empty"
         if "last_file" not in st.session_state:
-            st.session_state.last_file = "Leer"
+            st.session_state.last_file = "empty"
 
         #if st.session_state.uploaded_file is not None:
         #    last_file = uploaded_file.name
 
     st.header("Input Data")
     st.markdown(
-        "This panel allows for easy data visulaization. The chosen image file will be used of the preliminary test run.")
+        "This panel can be used for easy data visualization. The chosen image file will be used of the preliminary test run.")
     if st.session_state.df is not None:
 
         
@@ -188,7 +189,7 @@ def page_data():
 
 
         st.subheader("Changing Parameters")
-    st.markdown("Please specify the analytical settings. The micron-to-pixel ratio, as well as the dimensions of the image in X- and Y-Direction must be specified by the user. Please specify if measurements were provided in pixels or microns. The default threshold angle for performing edge-correction analysis is set to 140°. Please select if additional parameters should be set in the *Advanced Settings*.")
+    st.markdown("Please specify the analytical settings. The pixel edge size in microns (micron to pixel ratio), as well as the dimensions of the image in X- and Y-direction must be specified by the user. Please specify if measurements were provided in pixels or microns. The default threshold angle for performing edge-correction analysis is set to 140°. Please select if additional parameters should be set in the *Advanced Settings*.")
     st.markdown(
         "**Note:** Always submit changes in the Settings with the *Submit* button.")
 
@@ -200,7 +201,7 @@ def page_data():
         if "Y" not in st.session_state:
             st.session_state.Y = 0.01
         pixel_rat = st.number_input(
-            'Please enter pixel/microns ratio', value=st.session_state.pixel_rat)
+            'Please enter pixel edge size in microns (micron to pixel ratio)', value=st.session_state.pixel_rat)
         size_X = st.number_input(
             'Please enter total pixels/microns in X direction', value=st.session_state.X)
         size_Y = st.number_input(
@@ -235,7 +236,7 @@ def page_data():
             if "Y" not in st.session_state:
                  st.session_state.Y = 0.01
             pixel_rat = st.number_input(
-                 'Please enter pixel/microns ratio', value=st.session_state.pixel_rat)
+                 'Please enter pixel edge size in microns (micron to pixel ratio)', value=st.session_state.pixel_rat)
             size_X = st.number_input(
                  'Please enter total pixels/microns in X direction', value=st.session_state.X)
             size_Y = st.number_input(
@@ -267,7 +268,7 @@ def page_data():
                  st.session_state.angel = 140
 
                 angel = st.number_input(
-                    'Please enter the correction angle', value=st.session_state.angel)
+                    'Please enter the correction angle in degrees', value=st.session_state.angel)
                 st.session_state.angel = angel
                 #st.session_state.angel = angle 
 
@@ -281,7 +282,7 @@ def page_data():
                     st.session_state.keep_uncorr = 0
 
                 agree_edge = st.checkbox(
-                    'Allow Edge Degree Detection?', st.session_state.edge_mode)
+                    'Allow edge degree detection?', st.session_state.edge_mode)
                 if agree_edge:
                     st.session_state.edge_mode = 1
                 else:
@@ -290,14 +291,14 @@ def page_data():
                 agree_edge = st.session_state.edge_mode
                 st.session_state.edge_mode = agree_edge
                 agree_para_save = st.checkbox(
-                    'Save a seperate Parameter-List?', st.session_state.save_para)
+                    'Save a seperate parameter list?', st.session_state.save_para)
                 if agree_para_save:
                     st.session_state.save_para = 1
                 else:
                     st.session_state.save_para = 0
 
                 agree_log_save = st.checkbox(
-                    'Keep Log-Files of Parameters?', st.session_state.agree_log_save)
+                    'Keep log-files of parameters?', st.session_state.agree_log_save)
                 if agree_log_save:
                     st.session_state.agree_log_save = 1
                 else:
@@ -305,7 +306,7 @@ def page_data():
                 agree_log_save = st.session_state.agree_log_save
 
                 agree_kepp_uncorr = st.checkbox(
-                    'Show uncorrected Cluster Positions?', st.session_state.keep_uncorr)
+                    'Show uncorrected cluster positions?', st.session_state.keep_uncorr)
                 if agree_kepp_uncorr:
                     st.session_state.keep_uncorr = 1
                 else:
@@ -315,18 +316,18 @@ def page_data():
             with col2:
                 st.write("**Explanation**")
                 st.write(
-                    "*Correction Angle:* Changes the exclusion angle for the edge correction.")
+                    "*Correction angle:* Changes the exclusion angle for the edge correction. The smaller the angle, the more cells will be labeled as edge cells.")
                 st.write(
-                    "*Edge Detection:* Provides an discrete value of a cell's distance to edge")
+                    "*Edge degree detection:* Provides a discrete value of a cell's distance to edge")
                 st.write(
-                    "*Parameter List:* Allow seperate output of calculated Epsilon and n_min")
+                    "*Parameter list:* Allow seperate output of calculated Epsilon and n_min (input parameters for DBSCAN")
                 st.write(
-                    "*Log Files:* Allow seperate output of input parameters")
+                    "*Log files:* Allow seperate output of input parameters")
                 st.write(
-                    "*Uncorrected Cluster Positions:* Allow output of uncorrected Culster Postions in DBSCAN-CellX Output File")
+                    "*Uncorrected cluster positions:* Allow output of uncorrected cluster postions in DBSCAN-CellX output file in addition to corrected cluster positions.")
 
     st.subheader("Test Run")
-    st.write("**Note:** Running a test run creates and saves a seperate *test_data* file and *DBSCAN_CellX_output* basedon the input data in the save directory. Depending on the chosen *Advanced Settings* furhter files may be created.")
+    st.write("**Note:** Running a test run creates and saves a seperate *test_data* file and *DBSCAN_CellX_output* based on the input data in the save directory. Depending on the chosen *Advanced Settings* further files may be created.")
     if "test_run_counter" not in st.session_state:
         st.session_state.test_run_counter = 0
     if st.button('Run Test'):
@@ -559,7 +560,7 @@ def page_data():
                     st.dataframe(logs.T)
             else:
                 st.warning(
-                    "To compare different parameters please enable *Keep Log-Files of Parameters* in the Advanced Settings")
+                    "To compare different parameters, please enable *Keep Log-Files of Parameters* in the Advanced Settings")
 
         with test_tab5:
             st.subheader("Overlaying Microscopy Data")
@@ -653,7 +654,7 @@ def page_run():
                 if "Y" not in st.session_state:
                     st.session_state.Y = 0.01
                 pixel_rat = st.number_input(
-                    'Please enter pixel/microns ratio', value=st.session_state.pixel_rat)
+                    'Please enter pixel edge size in microns (micron to pixel ratio)', value=st.session_state.pixel_rat)
                 size_X = st.number_input(
                     'Please enter total pixels/microns in X direction', value=st.session_state.X)
                 size_Y = st.number_input(
@@ -685,7 +686,7 @@ def page_run():
                      st.session_state.angel = 140
 
                     angel = st.number_input(
-                        'Please enter the correction angle', value=st.session_state.angel)
+                        'Please enter the correction angle in degrees', value=st.session_state.angel)
                     st.session_state.angel = angel
                     #st.session_state.angel = angle
 
@@ -699,7 +700,7 @@ def page_run():
                         st.session_state.keep_uncorr = 0
 
                     agree_edge = st.checkbox(
-                        'Allow Edge Degree Detection?', st.session_state.edge_mode)
+                        'Allow edge degree detection?', st.session_state.edge_mode)
                     if agree_edge:
                         st.session_state.edge_mode = 1
                     else:
@@ -708,14 +709,14 @@ def page_run():
                     agree_edge = st.session_state.edge_mode
                     st.session_state.edge_mode = agree_edge
                     agree_para_save = st.checkbox(
-                        'Save a seperate Parameter-List?', st.session_state.save_para)
+                        'Save a seperate parameter list?', st.session_state.save_para)
                     if agree_para_save:
                         st.session_state.save_para = 1
                     else:
                         st.session_state.save_para = 0
 
                     agree_log_save = st.checkbox(
-                        'Keep Log-Files of Parameters?', st.session_state.agree_log_save)
+                        'Keep log files of parameters?', st.session_state.agree_log_save)
                     if agree_log_save:
                         st.session_state.agree_log_save = 1
                     else:
@@ -723,7 +724,7 @@ def page_run():
                     agree_log_save = st.session_state.agree_log_save
 
                     agree_kepp_uncorr = st.checkbox(
-                        'Show uncorrected Cluster Positions?', st.session_state.keep_uncorr)
+                        'Show uncorrected cluster positions?', st.session_state.keep_uncorr)
                     if agree_kepp_uncorr:
                         st.session_state.keep_uncorr = 1
                     else:
@@ -733,15 +734,19 @@ def page_run():
                 with col2:
                     st.write("**Explanation**")
                     st.write(
-                        "*Correction Angle:* Changes the exclusion angle for the edge correction.")
+                        "*Correction angle:* Changes the exclusion angle for the edge correction. The smaller the angle, the more cells will be labeled as edge cells.")
                     st.write(
-                        "*Edge Detection:* Provides an discrete value of a cell's distance to edge")
+                        "*Edge degree detection:* Provides a discrete value of a cell's distance to edge")
                     st.write(
-                        "*Parameter List:* Allow seperate output of calculated Epsilon and n_min")
+                        "*Parameter list:* Allow seperate output of calculated Epsilon and n_min (input parameters for DBSCAN")
                     st.write(
-                        "*Log Files:* Allow seperate output of input parameters")
+                        "*Log files:* Allow seperate output of input parameters")
                     st.write(
-                        "*Uncorrected Cluster Positions:* Allow output of uncorrected Culster Postions in DBSCAN-CellX Output File")
+                        "*Uncorrected cluster positions:* Allow output of uncorrected cluster postions in DBSCAN-CellX output file in addition to corrected cluster positions.")
+
+
+
+
 
     if st.button('Run DBSCAN-CellX'):
         for i in file_names:
@@ -811,7 +816,7 @@ def second_page():
 
 
     st.title('Visualize Data')
-    st.markdown("Here the user can visualize the output generated by DBSCAN-CellX in different ways. The user can choose to filter the output files by column and also change the appearance by changing the colouring parameter.")
+    st.markdown("Here, the user can visualize the output generated by DBSCAN-CellX in different ways. The user can choose to filter the output files by column and also change the appearance by changing the colouring parameter.")
 
     col1,col2,col3 = st.columns([1,2,1])
 

@@ -57,10 +57,15 @@ dbscan_cellx.main() # Calls the main function
 Specifications that can be provided with the dbscan_cellx command to specify the analysis are listed below. 
 
 #### (2.) Within a terminal
-The second option is to call the main function directly within a terminal. After successful installation, the package can be called from the terminal inside the activated environment. The input parameters for the terminal call are done through a seperate ArgumentParser as explanined below. To call the package use:
+The second option is to call the main function directly within a terminal. After successful installation, the package can be called from the terminal. The input parameters for the terminal call are given through a seperate ArgumentParser as explanined below. To call the package use:
 ```
 C:\Users\USER-NAME\... > python -m dbscan_cellx [- parameters]
 ```
+To see a list of all parameters, type:
+```
+python -m dbscan_cellx --help
+```
+or have a look at the table below.
 #### (3.) Via the App
 To use the App, the user has to navigate to the App directory. After installation, the user starts the App via:
 ```
@@ -78,23 +83,24 @@ As mentioned before, the DBSCAN-CellX package includes parameters which the user
 | Parameter | Description | Terminal Flag | Default |
 | --- | --- | --- | --- |
 | files | List of files in *csv*-format | -f --files | - |
-| save | Path to the save-folder | -sa --save | - |
-| pixel_ration | The ratio of pixels per micron | -p --pixel_ration | - |
-| size_x | The full image resolution in X-direction (in microns) | -x --size_x | - |
-| size_y | The full image resolution in Y-direction (in microns) | -y --size_y | - |
-| edge_mode | A boolean input if edge-degree should be determined | -e --edge_mode | 1 |
-| angle_parameter | Threshold-angle for the edge correction (as integer in degrees) | -a --angle_parameter | 140 |
-| save_parameter | Boolean input if a seperate list should be saved containing the calculated DBSCAN-parameters (*n_min*,*Epsilon*)| -sp --save_parameter | 1 |
+| save | Path to directory where outputf files should be saved. Note: path should end with "/" in unix based systems or with "\ " in Windows     systems. | -sa --save | - |
+| pixel_ratio | Pixel edge size in microns (micron to pixel ratio). | -p --pixel_ratio | - |
+| size_x | Image size in microns in X direction | -x --size_x | - |
+| size_y | Image size in microns in Y direction | -y --size_y | - |
+| edge_mode | Boolean input if edge-degree should be determined | -e --edge_mode | 1 |
+| angle_parameter | Threshold angle for edge correction in degrees as an integer.  | -a --angle_parameter | 140 |
+|save_parameter | Boolean input if a separate list containing the calculated DBSCAN-parameters (*n_min*,*Epsilon*) should be saved| -sp --s    ave_parameter | 1 |
+
 
 Whether the user uses the package inside a Python script (Option 1) or the terminal (Option 2), the actual function call for changing the parameters differs.
-A full example call of all parameters inside a python script (Option 1) by applying dbscan_cellx to *file.csv* which defines a table with the positions of cells within an image of size 938.4 x 565.8 microns^2 in x- and y-dimension obtained at a resolution of 2.9 microns/pixel, will look like:
-
+A full example call of all parameters inside a python script (Option 1) could look as written below. In the example, *file.csv* defines a table with the positions of cells within an image of size 938.4 x 565.8 microns^2 in x- and y-dimension obtained at a resolution of 2.9 microns/pixel.
 ```
 from dbscan_cellx import dbscan_cellx # Imports the dbscan_cellx package
 
 
 dbscan_cellx.main(["C:\Users\USER-NAME\file.csv"], "C:\Users\USER-NAME\save_folder\", 2.90, 938.40, 565.80, 1, 140, 1) # Calls the main function
 ```
+Please note that the file is given within "[]".
 Hereby, an edge-correction will be run using the default threshold-angle of 140°, as well as a calculation of the edge-degree for each cell. Results are specified to be saved to the *save_folder*, including the list of determined DBSCAN-parameters. 
 
 In contrast, inside the terminal (Option 2), the parameters are specified as follows: 
