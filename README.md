@@ -1,5 +1,5 @@
 <p align="left">
-  <img img src="Logo.jpg" width="150" height="200"/>
+  <img img src="Logo.jpg" width="194" height="180"/>
 </p>
 
 # DBSCAN-CellX
@@ -84,15 +84,15 @@ As mentioned before, the DBSCAN-CellX package includes parameters which the user
 | --- | --- | --- | --- |
 | files | List of files in *csv*-format | -f --files | - |
 | save | Path to directory where outputf files should be saved. Note: path should end with "/" in unix based systems or with "\ " in Windows     systems. | -sa --save | - |
-| pixel_ratio | Pixel edge size in microns (micron to pixel ratio). | -p --pixel_ratio | - |
+| pixel_ratio | Pixel edge size in microns (micron to pixel ratio) | -p --pixel_ratio | - |
 | size_x | Image size in microns in X direction | -x --size_x | - |
 | size_y | Image size in microns in Y direction | -y --size_y | - |
 | edge_mode | Boolean input if edge-degree should be determined | -e --edge_mode | 1 |
 | angle_parameter | Threshold angle for edge correction in degrees as an integer.  | -a --angle_parameter | 140 |
-|save_parameter | Boolean input if a separate list containing the calculated DBSCAN-parameters (*n_min*,*Epsilon*) should be saved| -sp --s    ave_parameter | 1 |
+|save_parameter | Boolean input if a separate list containing the calculated DBSCAN-parameters (*n_min*, *Epsilon*) should be saved| -sp --save_parameter | 1 |
 
 
-Whether the user uses the package inside a Python script (Option 1) or the terminal (Option 2), the actual function call for changing the parameters differs.
+Depending on if the user uses the package inside a Python script (Option 1) or the terminal (Option 2), the actual function call for changing the parameters differs.
 A full example call of all parameters inside a python script (Option 1) could look as written below. In the example, *file.csv* defines a table with the positions of cells within an image of size 938.4 x 565.8 microns^2 in x- and y-dimension obtained at a resolution of 2.9 microns/pixel.
 ```
 from dbscan_cellx import dbscan_cellx # Imports the dbscan_cellx package
@@ -100,8 +100,8 @@ from dbscan_cellx import dbscan_cellx # Imports the dbscan_cellx package
 
 dbscan_cellx.main(["C:\Users\USER-NAME\file.csv"], "C:\Users\USER-NAME\save_folder\", 2.90, 938.40, 565.80, 1, 140, 1) # Calls the main function
 ```
-Please note that the file is given within "[]".
-Hereby, an edge-correction will be run using the default threshold-angle of 140°, as well as a calculation of the edge-degree for each cell. Results are specified to be saved to the *save_folder*, including the list of determined DBSCAN-parameters. 
+Please note that the file is given within squared brackets "[]".
+An edge-correction will be run using the default threshold-angle of 140°, as well as a calculation of the edge-degree for each cell. Results are specified to be saved to the *save_folder*, including the list of determined DBSCAN-parameters. 
 
 In contrast, inside the terminal (Option 2), the parameters are specified as follows: 
 ```

@@ -20,11 +20,11 @@ if __name__ == "__main__":
                         nargs='*')
     parser.add_argument('-sa', '--save', help='Specify path to directory where outputf files should be saved. Note: path should end with "/" in unix based systems or with "\ " in Windows systems.',
                         default='C:/Users/Pascal/Master/Graw/')
-    parser.add_argument('-p', '--pixel_ratio', help='Plese specify the pixel edge size in microns (micron to pixel ratio)', type=float,
+    parser.add_argument('-p', '--pixel_ratio', help='Plese specify the pixel edge size in microns (micron to pixel ratio).', type=float,
                         default=2.8986)
-    parser.add_argument('-x', '--size_x', help='Please enter image size in microns in X direction', type=float,
+    parser.add_argument('-x', '--size_x', help='Please enter image size in microns in X direction.', type=float,
                         default=938.40)
-    parser.add_argument('-y', '--size_y', help='Please enter image size in microns in Y direction', type=float,
+    parser.add_argument('-y', '--size_y', help='Please enter image size in microns in Y direction.', type=float,
                         default=565.80)
     parser.add_argument('-e', '--edge_mode', help='Specify if edge degree should be detected. Enter 1 if edge degree is desired, 0 if it is not.', type=int,
                         default=1)

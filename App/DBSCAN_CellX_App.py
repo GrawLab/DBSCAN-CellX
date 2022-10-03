@@ -54,7 +54,7 @@ def home():
     st.image(imagelogo,  width=300)
 
 
-    st.markdown("DBSCAN-CellX is a clustering and positional classification tool especially designed for cell culture experiments(Quelle). This tool relies on the original DBSCAN algorithm from Sander, J., et. al (1996) to determine individual clusters.Additionally, it performs a robust classification of cells as noise, edge and center cells, depending on their relative location within the clusters.")
+    st.markdown("DBSCAN-CellX is a clustering and positional classification tool especially designed for cell culture experiments(Quelle). This tool relies on the original DBSCAN algorithm from Sander, J., et. al (1996) to determine individual clusters. Additionally, it performs a robust classification of cells as noise, edge and center cells, depending on their relative location within the clusters.")
     st.subheader("Data Requirements")
     st.markdown("To run DBSCAN-CellX on your data, the input file has to consist of a table with at least 4 columns depicting, (1) a unique Image_ID (*ImageNumber*), (2) a unique *Cell ID*, as well as (3) the *X*- and *Y*-position of the cell. Both *ImageNumber* and *CellID* are integers. The data structure is analogous to the output provided by CellProfiler (Stirling DR; 2021) or other image analysis tools.")
 
@@ -99,7 +99,7 @@ def picker_save():
 
 def page_data():
     st.title('Test DBSCAN-CellX')
-    st.markdown("This is the main part of the DBSCAN-CellX App. This page provides the user to input their data, run a test run and change selected parameters.")
+    st.markdown("This is the testing area of the DBSCAN-CellX App. This page allows the user to input their data, run a test run and change selected parameters.")
 
 #Adress Data Directory
 
@@ -201,9 +201,9 @@ def page_data():
         pixel_rat = st.number_input(
             'Please enter pixel edge size in microns (micron to pixel ratio)', value=st.session_state.pixel_rat)
         size_X = st.number_input(
-            'Please enter total pixels/microns in X direction', value=st.session_state.X)
+            'Please enter total pixels or microns in X direction', value=st.session_state.X)
         size_Y = st.number_input(
-            'Please enter total pixels/microns in Y direction', value=st.session_state.Y)
+            'Please enter total pixels or microns in Y direction', value=st.session_state.Y)
         clicked2 = st.button('Submit')
         if clicked2:
             st.session_state.pixel_rat = pixel_rat
@@ -624,6 +624,7 @@ def page_run():
         st.subheader('Folder Picker')
         picker_data()
         picker_save()
+        st.markdown('*Hint: Directory paths must end with "/" in Unix-based systems or "\ " in Windows systems.')
     with col2:
 
         st.subheader("Data input")
