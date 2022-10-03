@@ -36,7 +36,7 @@ def main():
         "Visualization": second_page,
     }
     st.session_state.pages = pages
-    st.sidebar.title("App with pages")
+    st.sidebar.title("DBSCAN-CellX App")
 
     # Widget to select your page, you can choose between radio buttons or a selectbox
     page = st.sidebar.selectbox("Select your page", tuple(pages.keys()), key = "main")
@@ -53,8 +53,8 @@ def home():
     imagelogo = Image.open('./Images/Logo.jpg')
     st.image(imagelogo,  width=300)
 
-    st.markdown("DBSCAN-CellX is a clustering and positional classification tool especially designed for cell culture experiments(Quelle). This tool relies on the original DBSCAN algorithm from Sander, J., et. al (1996) to determine individual clusters.Additionally, it performs a robust classification of cells as noise, edge and center cells, depending on their relative location within the clusters.")
 
+    st.markdown("DBSCAN-CellX is a clustering and positional classification tool especially designed for cell culture experiments(Quelle). This tool relies on the original DBSCAN algorithm from Sander, J., et. al (1996) to determine individual clusters.Additionally, it performs a robust classification of cells as noise, edge and center cells, depending on their relative location within the clusters.")
     st.subheader("Data Requirements")
     st.markdown("To run DBSCAN-CellX on your data, the input file has to consist of a table with at least 4 columns depicting, (1) a unique Image_ID (*ImageNumber*), (2) a unique *Cell ID*, as well as (3) the *X*- and *Y*-position of the cell. Both *ImageNumber* and *CellID* are integers. The data structure is analogous to the output provided by CellProfiler (Stirling DR; 2021) or other image analysis tools.")
 
@@ -74,9 +74,7 @@ def home():
                 "Please find further information on the Github-Page (https://github.com/PasLukas/DBSCAN-CellX)")
     image2 = Image.open('./Images/Data_output.PNG')
     st.image(image2, caption='Output Data Structure')
-    changer = st.button("Change")
-    if changer:
-        pager(st.session_state.pages, "Input Data")
+
 
 
 def run_DBSCAN(data, save, pixel_ratio, X, Y, edge_mode, angle_paramter, save_para, keep_uncorr):
@@ -86,14 +84,16 @@ def run_DBSCAN(data, save, pixel_ratio, X, Y, edge_mode, angle_paramter, save_pa
 def picker_data():
         if "text" not in st.session_state:
             st.session_state.text = "Input data directory"
-        data_path = st.text_input('Path to data input directory. *', st.session_state.text)
+        data_path = st.text_input(
+            'Path to data input directory. *', st.session_state.text)
         st.session_state.text = data_path
         return st.session_state.text
 
 def picker_save():
         if "text2" not in st.session_state:
             st.session_state.text2 = "Output data directory"
-        save_path = st.text_input('Path to data output directory. *', st.session_state.text2)
+        save_path = st.text_input(
+            'Path to data output directory. *', st.session_state.text2)
         st.session_state.text2 = save_path
         return st.session_state.text2
 
@@ -107,7 +107,7 @@ def page_data():
 
 
 #Call the Adress Directory Functions
-    col1, col2 = st.columns([2, 3])
+    col1, col2 = st.columns([3, 3])
     with col1:
         st.subheader('Folder Picker')
         picker_data()
@@ -117,9 +117,9 @@ def page_data():
 
         st.subheader("Data input")
         st.markdown("Please input a preliminary test file."
-                    " Files can be added via Drag and Drop or browsing through the system.")
+                    "Files can be added via Drag and Drop or browsing through the system.")
         if "uploaded_file" not in st.session_state:
-            st.session_state.uploaded_file = "Leer"
+            st.session_state.uploaded_file = "empty"
 
         uploaded_file = st.file_uploader(
             "Choose a file")
@@ -129,7 +129,7 @@ def page_data():
         if "df" not in st.session_state:
             st.session_state.df = None
         if "file" not in st.session_state:
-            st.session_state.file = "Leer"
+            st.session_state.file = "empty"
         if st.session_state.uploaded_file is not None:
 
             st.session_state.df = pd.read_csv(
@@ -152,8 +152,7 @@ def page_data():
         #    last_file = uploaded_file.name
 
     st.header("Input Data")
-    st.markdown(
-        "This panel can be used for easy data visualization. The chosen image file will be used of the preliminary test run.")
+    st.markdown("This panel can be used for easy data visualization. The chosen image file will be used of the preliminary test run.")
     if st.session_state.df is not None:
 
         
@@ -189,9 +188,8 @@ def page_data():
 
 
         st.subheader("Changing Parameters")
-    st.markdown("Please specify the analytical settings. The pixel edge size in microns (micron to pixel ratio), as well as the dimensions of the image in X- and Y-direction must be specified by the user. Please specify if measurements were provided in pixels or microns. The default threshold angle for performing edge-correction analysis is set to 140°. Please select if additional parameters should be set in the *Advanced Settings*.")
-    st.markdown(
-        "**Note:** Always submit changes in the Settings with the *Submit* button.")
+    st.markdown("Please specify the analytical settings. The pixel edge size in microns(micron to pixel ratio), as well as the dimensions of the image in X - and Y-direction must be specified by the user. Please specify if measurements were provided in pixels or microns. The default threshold angle for performing edge-correction analysis is set to 140°. Please select if additional parameters should be set in the * Advanced Settings*.")
+    st.markdown("**Note:** Always submit changes in the Settings with enter")
 
     def pixel_input():
         if "pixel_rat" not in st.session_state:
@@ -236,7 +234,7 @@ def page_data():
             if "Y" not in st.session_state:
                  st.session_state.Y = 0.01
             pixel_rat = st.number_input(
-                 'Please enter pixel edge size in microns (micron to pixel ratio)', value=st.session_state.pixel_rat)
+                'Please enter pixel edge size in microns (micron to pixel ratio)', value=st.session_state.pixel_rat)
             size_X = st.number_input(
                  'Please enter total pixels/microns in X direction', value=st.session_state.X)
             size_Y = st.number_input(
@@ -246,7 +244,7 @@ def page_data():
             st.session_state.pixel_rat = pixel_rat
             st.session_state.X = size_X
             st.session_state.Y = size_Y
-            st.write("Data:", st.session_state.X)
+            #st.write("Data:", st.session_state.X)
             #pixel_rat = st.session_state.pixel_rat
             #size_X = st.session_state.X
             #size_Y = st.session_state.Y
@@ -320,7 +318,7 @@ def page_data():
                 st.write(
                     "*Edge degree detection:* Provides a discrete value of a cell's distance to edge")
                 st.write(
-                    "*Parameter list:* Allow seperate output of calculated Epsilon and n_min (input parameters for DBSCAN")
+                    "*Parameter list:* Allow seperate output of calculated Epsilon and n_min (input parameters for DBSCAN)")
                 st.write(
                     "*Log files:* Allow seperate output of input parameters")
                 st.write(
@@ -453,7 +451,11 @@ def page_data():
                 #df_sub_output = pd.read_csv(output_name, sep=";")
                 fig = px.scatter(x=selec_test_data_df1["X"],
                                  y=selec_test_data_df1["Y"],
-                                 color=selec_test_data_df1["Cluster_Position"])
+                                 color=selec_test_data_df1["Cluster_Position"],
+                                 color_discrete_map={
+                    "noise": "#161616",
+                    "edge": "#E77700",
+                    "center": "#588E00"})
                 st.plotly_chart(fig, use_container_width=True)
 
         with test_tab2:
@@ -479,13 +481,21 @@ def page_data():
                     st.write("**Uncorrected Cluster Positions**")
                     fig = px.scatter(x=selec_test_data_df1["X"],
                                      y=selec_test_data_df1["Y"],
-                                     color=selec_test_data_df1["Uncorrected_Cluster_Position"])
+                                     color=selec_test_data_df1["Uncorrected_Cluster_Position"],
+                                     color_discrete_map={
+                        "noise": "#161616",
+                        "edge": "#E77700",
+                        "center": "#588E00"})
                     st.plotly_chart(fig, use_container_width=True)
                 with col2:
                     st.write("**Corrected Cluster Positions**")
                     fig = px.scatter(x=selec_test_data_df1["X"],
                                      y=selec_test_data_df1["Y"],
-                                     color=selec_test_data_df1["Cluster_Position"])
+                                     color=selec_test_data_df1["Cluster_Position"],
+                                     color_discrete_map={
+                        "noise": "#161616",
+                        "edge": "#E77700",
+                        "center": "#588E00"})
                     st.plotly_chart(fig, use_container_width=True)
 
             else:
@@ -522,7 +532,11 @@ def page_data():
                             selec_log_file1, sep=";")
                         fig1 = px.scatter(x=selec_test_data_df1["X"],
                                           y=selec_test_data_df1["Y"],
-                                          color=selec_test_data_df1["Cluster_Position"])
+                                          color=selec_test_data_df1["Cluster_Position"],
+                                          color_discrete_map={
+                            "noise": "#161616",
+                            "edge": "#E77700",
+                            "center": "#588E00"})
                         st.plotly_chart(fig1, use_container_width=True)
                         st.write("Parameter List:")
                         logs = selec_log_file_df1.astype(str)
@@ -553,7 +567,11 @@ def page_data():
 
                     fig2 = px.scatter(x=selec_test_data_df2["X"],
                                       y=selec_test_data_df2["Y"],
-                                      color=selec_test_data_df2["Cluster_Position"])
+                                      color=selec_test_data_df2["Cluster_Position"],
+                                      color_discrete_map={
+                        "noise": "#161616",
+                        "edge": "#E77700",
+                        "center": "#588E00"})
                     st.plotly_chart(fig2, use_container_width=True)
                     st.write("Parameter List:")
                     logs = selec_log_file_df2.astype(str)
@@ -582,7 +600,11 @@ def page_data():
                 colors = {'edge': 'red', 'center': 'green',
                           'noise': 'blue'}
                 plt.scatter(selec_test_data_df1["X"],
-                            selec_test_data_df1["Y"], s=10, c=selec_test_data_df1["Cluster_Position"].map(colors))
+                            selec_test_data_df1["Y"], s=10, c=selec_test_data_df1["Cluster_Position"].map(colors),
+                            color_discrete_map={
+                    "noise": "#161616",
+                    "edge": "#E77700",
+                    "center": "#588E00"})
                 st.pyplot(fig, use_container_width=True)
 
 
@@ -738,15 +760,11 @@ def page_run():
                     st.write(
                         "*Edge degree detection:* Provides a discrete value of a cell's distance to edge")
                     st.write(
-                        "*Parameter list:* Allow seperate output of calculated Epsilon and n_min (input parameters for DBSCAN")
+                        "*Parameter list:* Allow seperate output of calculated Epsilon and n_min (input parameters for DBSCAN)")
                     st.write(
                         "*Log files:* Allow seperate output of input parameters")
                     st.write(
                         "*Uncorrected cluster positions:* Allow output of uncorrected cluster postions in DBSCAN-CellX output file in addition to corrected cluster positions.")
-
-
-
-
 
     if st.button('Run DBSCAN-CellX'):
         for i in file_names:
@@ -817,13 +835,13 @@ def second_page():
 
     st.title('Visualize Data')
     st.markdown("Here, the user can visualize the output generated by DBSCAN-CellX in different ways. The user can choose to filter the output files by column and also change the appearance by changing the colouring parameter.")
-
     col1,col2,col3 = st.columns([1,2,1])
 
     with col2:
+        picker_save()
         option_test_stem1 = st.selectbox(
             'Dataset',
-            (list(test_data_list[0])), key="1")
+            (list(test_data_list[0])), key="3")
         index_bol1 = list(pd.DataFrame(test_data_list)[0].str.contains(
             option_test_stem1))
         selec_test_data1 = st.session_state.text2 + \
@@ -942,15 +960,33 @@ def second_page():
                     st.dataframe(logs.T)
     with col2:
         fig = px.scatter(x=df_sub_IM["X"],
-                    y=df_sub_IM["Y"],
-                    color=df_sub_IM[color_option])
+                        y=df_sub_IM["Y"],
+                             color=df_sub_IM[color_option],
+                             color_discrete_map={
+                "noise": "#161616",
+                "edge": "#E77700",
+                "center": "#588E00"})
+        if color_option == "Cluster_Position":
+            fig.update_layout(legend_title_text='Cluster Position')
+            st.plotly_chart(fig, use_container_width=True)
+        elif color_option == "Edge_Degree":
+            fig = fig.update_layout(legend_title_text='Edge Degree')
+            st.plotly_chart(fig, use_container_width=True)
+        else:
+            fig = fig.update_layout(legend_title_text='Cells in Cluster')
+            st.plotly_chart(fig, use_container_width=True)
 
-        st.plotly_chart(fig, use_container_width=True)
+
+
+
+        #st.plotly_chart(fig, use_container_width=True)
     with col3:
         if not selec_param_file1:
             st.write("No Parameter List available")
         else:
             st.latex("Parameter List:")
+            selec_param_file1_df.iloc[IM_ID-1,
+                                      2] = round(selec_param_file1_df.iloc[IM_ID-1, 2], 2)
             params = selec_param_file1_df.astype(str)
             eps = params.iloc[IM_ID-1,2]
             nmin = params.iloc[IM_ID-1,1]
