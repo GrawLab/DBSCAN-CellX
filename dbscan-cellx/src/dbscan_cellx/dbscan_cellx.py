@@ -272,7 +272,7 @@ def edge(table, pixel_list, angel_paramter):
     return(table)
 
 
-def edit_table(files, save, pixel_list, edge_mode, angel_paramter, save_paramter, keep_uncorr):
+def edit_table(files, save, pixel_list, edge_mode, angel_parameter, save_parameter, keep_uncorr):
     for j in files:
   
         with open(j, newline='') as csvfile:
@@ -310,16 +310,19 @@ def edit_table(files, save, pixel_list, edge_mode, angel_paramter, save_paramter
             table = table.merge(clustersizes, on='Cluster_ID')
             table = table.rename(columns={"Label_y": "Hallo"})
 
-            table = correct_cluster_label(table, angel_paramter)
+            table = correct_cluster_label(table, angel_parameter)
 
             if edge_mode == 1:
-                table = edge(table, pixel_list, angel_paramter)
+                table = edge(table, pixel_list, angel_parameter)
                 table = table.drop('Ind', axis=1)
             #name = j[:j.find(str("test_data_"))+11]
-            name = j[:-4]
-            savepath =  name + '_DBSCAN_CELLX_output.csv'
-            if save_paramter == 1:
-                savepath_para =  name + "_paramter_list.csv"
+            delimiter_path = save[-1]
+            name_stem = j.split(delimiter_path)[-1]
+            name_stem = name_stem[:-4]
+
+            savepath =  save + name_stem + '_DBSCAN_CELLX_output.csv'
+            if save_parameter == 1:
+                savepath_para = save + name_stem + "_paramter_list.csv"
                 para_df.to_csv(savepath_para, sep=';', index=False)
             df_list.append(table)
             
@@ -337,7 +340,7 @@ def edit_table(files, save, pixel_list, edge_mode, angel_paramter, save_paramter
         
 
 
-def main(files, save, pixel_ratio, size_x, size_y, edge_mode = 1, angel_paramter = 140, save_paramter = 1, keep_uncorr = 1):
+def main(files, save, pixel_ratio, size_x, size_y, edge_mode = 1, angel_parameter = 140, save_parameter = 1, keep_uncorr = 1):
     st = time.time()
     print('Data will be analyzed: \n')
     print(files)
@@ -348,7 +351,7 @@ def main(files, save, pixel_ratio, size_x, size_y, edge_mode = 1, angel_paramter
     Y = size_y
     pixel_list = [X, Y, pixel]
     edit_table(files,save,
-               pixel_list, edge_mode, angel_paramter, save_paramter, keep_uncorr)
+               pixel_list, edge_mode, angel_parameter, save_parameter, keep_uncorr)
     et = time.time()
     elapsed = et-st
     print("Thats it! Thanks for using DBSCAN-CellX!")
