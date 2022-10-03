@@ -316,11 +316,11 @@ def page_data():
                 st.write(
                     "*Correction angle:* Changes the exclusion angle for the edge correction. The smaller the angle, the more cells will be labeled as edge cells.")
                 st.write(
-                    "*Edge degree detection:* Provides a discrete value of a cell's distance to edge")
+                    "*Edge degree detection:* Provides a discrete value of a cell's distance to edge.")
                 st.write(
-                    "*Parameter list:* Allow seperate output of calculated Epsilon and n_min (input parameters for DBSCAN)")
+                    "*Parameter list:* Allow seperate output of calculated Epsilon and n_min (input parameters for DBSCAN).")
                 st.write(
-                    "*Log files:* Allow seperate output of input parameters")
+                    "*Log files:* Allow seperate output of input parameters.")
                 st.write(
                     "*Uncorrected cluster positions:* Allow output of uncorrected cluster postions in DBSCAN-CellX output file in addition to corrected cluster positions.")
 
@@ -758,11 +758,11 @@ def page_run():
                     st.write(
                         "*Correction angle:* Changes the exclusion angle for the edge correction. The smaller the angle, the more cells will be labeled as edge cells.")
                     st.write(
-                        "*Edge degree detection:* Provides a discrete value of a cell's distance to edge")
+                        "*Edge degree detection:* Provides a discrete value of a cell's distance to edge.")
                     st.write(
-                        "*Parameter list:* Allow seperate output of calculated Epsilon and n_min (input parameters for DBSCAN)")
+                        "*Parameter list:* Allow seperate output of calculated Epsilon and n_min (input parameters for DBSCAN).")
                     st.write(
-                        "*Log files:* Allow seperate output of input parameters")
+                        "*Log files:* Allow seperate output of input parameters.")
                     st.write(
                         "*Uncorrected cluster positions:* Allow output of uncorrected cluster postions in DBSCAN-CellX output file in addition to corrected cluster positions.")
 
