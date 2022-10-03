@@ -29,7 +29,7 @@ def main():
     # Register your pages
     pages = {
         "Homepage": home,
-        "Input Data": page_data,
+        "Test DBSCAN-CellX": page_data,
         #"Settings": page_settings,
         #"Test Area": page_test,
         "Run DBSCAN-CellX": page_run,
@@ -98,7 +98,7 @@ def picker_save():
         return st.session_state.text2
 
 def page_data():
-    st.title('Run DBSCAN-CellX')
+    st.title('Test DBSCAN-CellX')
     st.markdown("This is the main part of the DBSCAN-CellX App. This page provides the user to input their data, run a test run and change selected parameters.")
 
 #Adress Data Directory
@@ -172,7 +172,7 @@ def page_data():
                     st.session_state.input_data_options = 1
                 st.session_state.input_data_options = st.selectbox(
                     'Image ID',
-                    (list(set(df.iloc[:, 0]))), key="Input_data_options")
+                    (list(set(df.iloc[:, 0]))), key="Input_data_options", )
                 df_sub_IM = df[df["ImageNumber"] ==
                                st.session_state.input_data_options]
                 fig0 = px.scatter(x=df_sub_IM["X"],
