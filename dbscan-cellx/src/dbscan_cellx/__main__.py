@@ -19,7 +19,7 @@ if __name__ == "__main__":
                         default=[],
                         nargs='*')
     parser.add_argument('-sa', '--save', help='Specify path to directory where outputf files should be saved. Note: path should end with "/" in unix based systems or with "\ " in Windows systems.',
-                        default='C:/Users/Pascal/Master/Graw/')
+                        default='')
     parser.add_argument('-p', '--pixel_ratio', help='Plese specify the pixel edge size in microns (micron to pixel ratio).', type=float,
                         default=2.8986)
     parser.add_argument('-x', '--size_x', help='Please enter image size in microns in X direction.', type=float,
