@@ -54,7 +54,7 @@ def home():
     st.image(imagelogo,  width=300)
 
 
-    st.markdown("DBSCAN-CellX is a clustering and positional classification tool especially designed for cell culture experiments(Quelle). This tool relies on the original DBSCAN algorithm from Sander, J., et. al (1996) to determine individual clusters. Additionally, it performs a robust classification of cells as noise, edge and center cells, depending on their relative location within the clusters.")
+    st.markdown("DBSCAN-CellX is a clustering and positional classification tool especially designed for cell culture experiments(Quelle). This tool relies on the original DBSCAN algorithm from Sander, J., et. al (1996) to determine individual clusters.Additionally, it performs a robust classification of cells as noise, edge and center cells, depending on their relative location within the clusters.")
     st.subheader("Data Requirements")
     st.markdown("To run DBSCAN-CellX on your data, the input file has to consist of a table with at least 4 columns depicting, (1) a unique Image_ID (*ImageNumber*), (2) a unique *Cell ID*, as well as (3) the *X*- and *Y*-position of the cell. Both *ImageNumber* and *CellID* are integers. The data structure is analogous to the output provided by CellProfiler (Stirling DR; 2021) or other image analysis tools.")
 
@@ -99,7 +99,7 @@ def picker_save():
 
 def page_data():
     st.title('Test DBSCAN-CellX')
-    st.markdown("This is the testing area of the DBSCAN-CellX App. This page allows the user to input their data, run a test run and change selected parameters.")
+    st.markdown("This is the main part of the DBSCAN-CellX App. This page provides the user to input their data, run a test run and change selected parameters.")
 
 #Adress Data Directory
 
@@ -172,7 +172,7 @@ def page_data():
                     st.session_state.input_data_options = 1
                 st.session_state.input_data_options = st.selectbox(
                     'Image ID',
-                    (list(set(df.iloc[:, 0]))), key="Input_data_options", )
+                    (list(set(df.iloc[:, 0]))), key="Input_data_options", index=st.session_state.input_data_options-1)
                 df_sub_IM = df[df["ImageNumber"] ==
                                st.session_state.input_data_options]
                 fig0 = px.scatter(x=df_sub_IM["X"],
@@ -201,9 +201,9 @@ def page_data():
         pixel_rat = st.number_input(
             'Please enter pixel edge size in microns (micron to pixel ratio)', value=st.session_state.pixel_rat)
         size_X = st.number_input(
-            'Please enter total pixels or microns in X direction', value=st.session_state.X)
+            'Please enter total pixels/microns in X direction', value=st.session_state.X)
         size_Y = st.number_input(
-            'Please enter total pixels or microns in Y direction', value=st.session_state.Y)
+            'Please enter total pixels/microns in Y direction', value=st.session_state.Y)
         clicked2 = st.button('Submit')
         if clicked2:
             st.session_state.pixel_rat = pixel_rat
@@ -316,11 +316,11 @@ def page_data():
                 st.write(
                     "*Correction angle:* Changes the exclusion angle for the edge correction. The smaller the angle, the more cells will be labeled as edge cells.")
                 st.write(
-                    "*Edge degree detection:* Provides a discrete value of a cell's distance to edge.")
+                    "*Edge degree detection:* Provides a discrete value of a cell's distance to edge")
                 st.write(
-                    "*Parameter list:* Allow seperate output of calculated Epsilon and n_min (input parameters for DBSCAN).")
+                    "*Parameter list:* Allow seperate output of calculated Epsilon and n_min (input parameters for DBSCAN)")
                 st.write(
-                    "*Log files:* Allow seperate output of input parameters.")
+                    "*Log files:* Allow seperate output of input parameters")
                 st.write(
                     "*Uncorrected cluster positions:* Allow output of uncorrected cluster postions in DBSCAN-CellX output file in addition to corrected cluster positions.")
 
@@ -405,7 +405,7 @@ def page_data():
                 option_test_stem1))
             option_test_num1 = st.selectbox(
                 'Test Run Number',
-                (pd.DataFrame(test_data_list)[1][index_bol1].tolist()[0]), key="2")
+                (pd.DataFrame(test_data_list)[1][index_bol1].tolist()[0]), key="2", index=max(pd.DataFrame(test_data_list)[1][index_bol1].tolist()[0])-1)
             selec_test_data1 = st.session_state.text2 + \
                 pd.DataFrame(test_data_list)[2][index_bol1].tolist()[
                     0][option_test_num1-1]
@@ -624,7 +624,6 @@ def page_run():
         st.subheader('Folder Picker')
         picker_data()
         picker_save()
-        st.markdown('*Hint: Directory paths must end with "/" in Unix-based systems or "\ " in Windows systems.')
     with col2:
 
         st.subheader("Data input")
@@ -655,7 +654,6 @@ def page_run():
             name_file = i.name
             full_name = st.session_state.text + name_file
             file_names.append(str(full_name))
-
     log_df = pd.DataFrame({"Pixel Ratio": [str(st.session_state.pixel_rat)], "X-Dimension": [str(st.session_state.X)],
                            "Y-Dimension": [str(st.session_state.Y)], "Edge-Degree Detection": [str(st.session_state.edge_mode)], "Correction Angle": [str(st.session_state.angel)], "Uncorrected_Cluster_Positions": [str(st.session_state.keep_uncorr)]})
     
@@ -758,16 +756,17 @@ def page_run():
                     st.write(
                         "*Correction angle:* Changes the exclusion angle for the edge correction. The smaller the angle, the more cells will be labeled as edge cells.")
                     st.write(
-                        "*Edge degree detection:* Provides a discrete value of a cell's distance to edge.")
+                        "*Edge degree detection:* Provides a discrete value of a cell's distance to edge")
                     st.write(
-                        "*Parameter list:* Allow seperate output of calculated Epsilon and n_min (input parameters for DBSCAN).")
+                        "*Parameter list:* Allow seperate output of calculated Epsilon and n_min (input parameters for DBSCAN)")
                     st.write(
-                        "*Log files:* Allow seperate output of input parameters.")
+                        "*Log files:* Allow seperate output of input parameters")
                     st.write(
                         "*Uncorrected cluster positions:* Allow output of uncorrected cluster postions in DBSCAN-CellX output file in addition to corrected cluster positions.")
 
     if st.button('Run DBSCAN-CellX'):
         for i in file_names:
+            st.session_state.text2
             run_DBSCAN(i, st.session_state.text2,
                        st.session_state.pixel_rat, st.session_state.X, st.session_state.Y, st.session_state.edge_mode, st.session_state.angel, st.session_state.save_para, st.session_state.keep_uncorr)
         first_file = file_names[0]
@@ -780,7 +779,9 @@ def page_run():
                 keep_uncorr = "Enabled"
             else:
                 keep_uncorr = "Disabled"
-            save_path =  i
+            delimiter_path = st.session_state.text2[-1]
+            name_stem = i.split(delimiter_path)[-1]
+            save_path = st.session_state.text2 + name_stem
             log_df = pd.DataFrame({"Pixel Ratio": [str(st.session_state.pixel_rat)], "X-Dimension": [str(st.session_state.X)],
                                    "Y-Dimension": [str(st.session_state.Y)], "Edge-Degree Detection": [str(edge_mode)], "Correction Angle": [str(st.session_state.angel)], "Uncorrected_Cluster_Positions": [str(keep_uncorr)]})
             output_name_log = save_path[:-4] + "_log_files.csv"
