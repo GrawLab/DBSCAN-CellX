@@ -130,9 +130,14 @@ def page_data():
         if "file" not in st.session_state:
             st.session_state.file = "empty"
         if st.session_state.uploaded_file is not None:
-
+            st.session_state.file_name = st.session_state.uploaded_file.name
+            file_name = st.session_state.uploaded_file.name
+            st.session_state.file = file_name
+            with open(st.session_state.text + st.session_state.file, newline='') as csvfile:
+                sniffer = csv.Sniffer().sniff(csvfile.readline())
+                delimiter = sniffer.delimiter
             st.session_state.df = pd.read_csv(
-                st.session_state.uploaded_file, sep=";")
+                st.session_state.uploaded_file, sep = str(delimiter))
             st.session_state.file_name = st.session_state.uploaded_file.name
             file_name = st.session_state.uploaded_file.name
             st.session_state.file = file_name
