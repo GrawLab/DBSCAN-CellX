@@ -105,7 +105,7 @@ An edge-correction will be run using the default threshold-angle of 140°, as we
 
 In contrast, inside the terminal (Option 2), the parameters are specified as follows: 
 ```
-C:\Users\USER-NAME\... > python -m dbscan_cellx -f C:\Users\USER-NAME\file.csv -sa C:\Users\USER-NAME\save_folder\ -p 2.90 -x 938.40 -y 565.80 -e 1 -a 140 -sp 1
+C:\Users\USER-NAME\... > python -m dbscan_cellx -f C:\Users\USER-NAME\file.csv -sa C:\Users\USER-NAME\save_folder\ -p 0.34 -x 938.40 -y 565.80 -e 1 -a 140 -sp 1
 ```
 Within the App, all parameters can be specified and set within graphically indicated locations (see documentaion of the App).
 
