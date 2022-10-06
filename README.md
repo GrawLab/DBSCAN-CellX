@@ -27,7 +27,7 @@ The Python package of DBSCAN-CellX is a standalone package which has to be insta
 ```
 C:\Users\USER-NAME\dbscan-cellx> python -m pip install -e .
 ```
-After installation the package should be fully usable inside the opened environment (see below). *If the user wants to use the the package in combination with the app-based GUI, the package has to be installed into the App environment (delete?).* 
+After installation the package should be fully usable inside the opened environment (see below).  
 
 ### (b) Graphical-User-Interface (App) (Recommended)
 To install the App, the easiest way is to use the pip installer with the *requirements.txt*-file found in the App-folder. Before installing the required dependencies, please make sure that you have a functional version of *git* installed.
@@ -93,12 +93,12 @@ As mentioned before, the DBSCAN-CellX package includes parameters which the user
 
 
 Depending on if the user uses the package inside a Python script (Option 1) or the terminal (Option 2), the actual function call for changing the parameters differs.
-A full example call of all parameters inside a python script (Option 1) could look as written below. In the example, *file.csv* defines a table with the positions of cells within an image of size 938.4 x 565.8 microns^2 in x- and y-dimension obtained at a resolution of 2.9 microns/pixel.
+A full example call of all parameters inside a python script (Option 1) could look as written below. In the example, *file.csv* defines a table with the positions of cells within an image of size 938.4 x 565.8 microns^2 in x- and y-dimension obtained at a resolution of 0.34 microns/pixel.
 ```
 from dbscan_cellx import dbscan_cellx # Imports the dbscan_cellx package
 
 
-dbscan_cellx.main(["C:\Users\USER-NAME\file.csv"], "C:\Users\USER-NAME\save_folder\", 2.90, 938.40, 565.80, 1, 140, 1) # Calls the main function
+dbscan_cellx.main(["C:\Users\USER-NAME\file.csv"], "C:\Users\USER-NAME\save_folder\", 0.34, 938.40, 565.80, 1, 140, 1) # Calls the main function
 ```
 Please note that the file is given within squared brackets "[]".
 An edge-correction will be run using the default threshold-angle of 140°, as well as a calculation of the edge-degree for each cell. Results are specified to be saved to the *save_folder*, including the list of determined DBSCAN-parameters. 
