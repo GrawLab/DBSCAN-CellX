@@ -12,6 +12,7 @@ from persist import persist, load_widget_state
 from skimage import io
 import matplotlib
 import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
 from dbscan_cellx import dbscan_cellx
 from PIL import Image
 from os import listdir
@@ -36,6 +37,7 @@ def main():
         "Visualization": second_page,
     }
     st.session_state.pages = pages
+    st.sidebar.image('./Images/Logo.jpg', width=200)
     st.sidebar.title("DBSCAN-CellX App")
 
     # Widget to select your page, you can choose between radio buttons or a selectbox
@@ -76,8 +78,8 @@ def home():
 
 
 
-def run_DBSCAN(data, save, pixel_ratio, X, Y, edge_mode, angle_paramter, save_para, keep_uncorr):
-    dbscan_cellx.main([data], save, pixel_ratio, X,
+def run_DBSCAN(data, save, pixel_ratio,cell_size, X, Y, edge_mode, angle_paramter, save_para, keep_uncorr):
+    dbscan_cellx.main([data], save, pixel_ratio,cell_size, X,
                       Y, edge_mode, angle_paramter, save_para, keep_uncorr)
 
 def picker_data():
@@ -195,37 +197,6 @@ def page_data():
     st.markdown("Please specify the analytical settings. The pixel edge size in microns(micron to pixel ratio), as well as the dimensions of the image in X - and Y-direction must be specified by the user. Please specify if measurements were provided in pixels or microns. The default threshold angle for performing edge-correction analysis is set to 140°. Please select if additional parameters should be set in the * Advanced Settings*.")
     st.markdown("**Note:** Always submit changes in the Settings with enter")
 
-    def pixel_input():
-        if "pixel_rat" not in st.session_state:
-            st.session_state.pixel_rat = 0.01
-        if "X" not in st.session_state:
-            st.session_state.X = 0.01
-        if "Y" not in st.session_state:
-            st.session_state.Y = 0.01
-        pixel_rat = st.number_input(
-            'Please enter pixel edge size in microns (micron to pixel ratio)', value=st.session_state.pixel_rat)
-        size_X = st.number_input(
-            'Please enter total pixels or microns in X direction', value=st.session_state.X)
-        size_Y = st.number_input(
-            'Please enter total pixels or microns in Y direction', value=st.session_state.Y)
-        clicked2 = st.button('Submit')
-        if clicked2:
-            st.session_state.pixel_rat = pixel_rat
-            st.session_state.X = size_X
-            st.session_state.Y = size_Y
-        return (st.session_state.pixel_rat, st.session_state.X, st.session_state.Y)
-
-   # def parameter_input():
-   #     if "angel" not in st.session_state:
-   #         st.session_state.angel = 140
-#
-   #     angel = st.number_input(
-   #         'Please enter the correction angle', value=st.session_state.angel)
-   #     st.session_state.angel = angel
-   #     angle = st.session_state.angel
-#
-   #     return (st.session_state.angel)
-
     sett_tab1, sett_tab2 = st.tabs(["Settings", "Advanced Settings"])
     with sett_tab1:
         col1, col2, col3 = st.columns([1, 1, 1])
@@ -233,21 +204,26 @@ def page_data():
             #pixel_input()
             if "pixel_rat" not in st.session_state:
                 st.session_state.pixel_rat = 0.01
+            if "cell_size" not in st.session_state:
+                st.session_state.cell_size = 0.01    
             if "X" not in st.session_state:
                  st.session_state.X = 0.01
             if "Y" not in st.session_state:
                  st.session_state.Y = 0.01
             pixel_rat = st.number_input(
                 'Please enter pixel edge size in microns (micron to pixel ratio)', value=st.session_state.pixel_rat)
+            cell_size = st.number_input(
+                'Please enter the estimated cell size in microns', value=st.session_state.cell_size)
             size_X = st.number_input(
-                 'Please enter total pixels/microns in X direction', value=st.session_state.X)
+                 'Please enter total pixels or microns in X direction', value=st.session_state.X)
             size_Y = st.number_input(
-                 'Please enter total pixels/microns in Y direction', value=st.session_state.Y)
+                'Please enter total pixels or microns in Y direction', value=st.session_state.Y)
             #clicked2 = st.button('Submit')
             #if clicked2:
             st.session_state.pixel_rat = pixel_rat
             st.session_state.X = size_X
             st.session_state.Y = size_Y
+            st.session_state.cell_size  = cell_size
             #st.write("Data:", st.session_state.X)
             #pixel_rat = st.session_state.pixel_rat
             #size_X = st.session_state.X
@@ -341,7 +317,7 @@ def page_data():
         df_sub.to_csv(save_path, sep=';', index=False)
         st.write('Run DBSCAN-CellX')
         run_DBSCAN(save_path, st.session_state.text2,
-                   st.session_state.pixel_rat, st.session_state.X, st.session_state.Y, st.session_state.edge_mode, st.session_state.angel, st.session_state.save_para, st.session_state.keep_uncorr)
+                   st.session_state.pixel_rat,st.session_state.cell_size, st.session_state.X, st.session_state.Y, st.session_state.edge_mode, st.session_state.angel, st.session_state.save_para, st.session_state.keep_uncorr)
         if st.session_state.agree_log_save == 1:
             if st.session_state.edge_mode:
                 edge_mode = "Enabled"
@@ -352,12 +328,10 @@ def page_data():
             else:
                 keep_uncorr = "Disabled"
 
-            log_df = pd.DataFrame({"Pixel Ratio": [str(st.session_state.pixel_rat)], "X-Dimension": [str(st.session_state.X)],
+            log_df = pd.DataFrame({"Pixel Ratio": [str(st.session_state.pixel_rat)], "Cell Size": [str(st.session_state.cell_size)], "X-Dimension": [str(st.session_state.X)],
                                    "Y-Dimension": [str(st.session_state.Y)], "Edge-Degree Detection": [str(edge_mode)], "Correction Angle": [str(st.session_state.angel)], "Uncorrected_Cluster_Positions": [str(keep_uncorr)]})
-            save_path
             output_name_log = save_path[:save_path.find(str("test_data_"))+9] + '_log_files_' + \
                 str(st.session_state.test_run_counter) + ".csv"
-            output_name_log
             log_df.to_csv(output_name_log, sep=';', index=False)
 
     if st.session_state.test_run_counter != 0:
@@ -444,11 +418,12 @@ def page_data():
                     keep_setting = st.button("Keep these Settings?")
                     if keep_setting:
                        st.session_state.pixel_rat = selec_log_file_df1.iloc[:,0] [0]
-                       st.session_state.X = selec_log_file_df1.iloc[:,1] [0]
-                       st.session_state.Y = selec_log_file_df1.iloc[:,2] [0]
-                       st.session_state.edge_mode = selec_log_file_df1.iloc[:,3] [0]
-                       st.session_state.angel = selec_log_file_df1.iloc[:,4] [0]
-                       st.session_state.keep_uncorr = selec_log_file_df1.iloc[:, 5][0]
+                       st.session_state.pixel_rat = selec_log_file_df1.iloc[:,1] [0]
+                       st.session_state.X = selec_log_file_df1.iloc[:,2] [0]
+                       st.session_state.Y = selec_log_file_df1.iloc[:,3] [0]
+                       st.session_state.edge_mode = selec_log_file_df1.iloc[:,4] [0]
+                       st.session_state.angel = selec_log_file_df1.iloc[:,5] [0]
+                       st.session_state.keep_uncorr = selec_log_file_df1.iloc[:, 6][0]
                        st.experimental_rerun()
 
             with col2:
@@ -589,6 +564,7 @@ def page_data():
             st.markdown("The user has the option to overlay the output DBSCAN classification with the original microscopy image data. The image file (i.e., original brightfield image in tiff, png, etc) corresponding to the test data set can be uploaded here.")
             uploaded_file2 = st.file_uploader(
                 "Choose a file", key="Uploader_Microscopy")
+            col1,col2,col3 = st.columns([1,3,1])
             if uploaded_file2 is not None:
 
                 data = np.array(uploaded_file2)
@@ -600,23 +576,28 @@ def page_data():
                 image = io.imread(uploaded_file2)
                 plt.imshow(image, cmap='gray')
                 plt.axis('on')
-                plt.margins(x=0, y=0)
-                colors = {'edge': 'red', 'center': 'green',
-                          'noise': 'blue'}
-                plt.scatter(selec_test_data_df1["X"],
-                            selec_test_data_df1["Y"], s=10, c=selec_test_data_df1["Cluster_Position"].map(colors),
-                            color_discrete_map={
-                    "noise": "#161616",
-                    "edge": "#E77700",
-                    "center": "#588E00"})
-                st.pyplot(fig, use_container_width=True)
+                #plt.margins(x=0, y=0)
+                colors = {'edge': '#E77700', 'center': '#588E00',
+                          'noise': '#161616'}
+                plt.xlabel("X")
+                plt.ylabel("Y")
+                scatter = ax.scatter(selec_test_data_df1["X"],
+                            selec_test_data_df1["Y"], s=10, c=selec_test_data_df1["Cluster_Position"].map(colors))
+                classes = ["Edge", "Center", "Noise"]
+                class_colours = ['#E77700', '#588E00', '#161616']
+                recs = []
+                for i in range(0, len(class_colours)):
+                    recs.append(mpatches.Rectangle((0, 0), 1, 1, fc=class_colours[i]))
+                plt.legend(recs, classes, bbox_to_anchor=(1.1, 1.05))
+                with col2:
+                    st.pyplot(fig, use_container_width=False)
 
 
 
 
 @st.cache
-def run_DBSCAN(data, save, pixel_ratio, X, Y, edge_mode, angle_paramter, save_para, keep_uncorr):
-    dbscan_cellx.main([data], save, pixel_ratio, X,
+def run_DBSCAN(data, save, pixel_ratio,cell_size, X, Y, edge_mode, angle_paramter, save_para, keep_uncorr):
+    dbscan_cellx.main([data], save, pixel_ratio,cell_size, X,
                       Y, edge_mode, angle_paramter, save_para, keep_uncorr)
 
 def page_run():
@@ -660,7 +641,7 @@ def page_run():
             name_file = i.name
             full_name = st.session_state.text + name_file
             file_names.append(str(full_name))
-    log_df = pd.DataFrame({"Pixel Ratio": [str(st.session_state.pixel_rat)], "X-Dimension": [str(st.session_state.X)],
+    log_df = pd.DataFrame({"Pixel Ratio": [str(st.session_state.pixel_rat)], "Cell Size": [str(st.session_state.cell_size)], "X-Dimension": [str(st.session_state.X)],
                            "Y-Dimension": [str(st.session_state.Y)], "Edge-Degree Detection": [str(st.session_state.edge_mode)], "Correction Angle": [str(st.session_state.angel)], "Uncorrected_Cluster_Positions": [str(st.session_state.keep_uncorr)]})
     
     col1,col2,col3 = st.columns ([1,3,1])
@@ -676,24 +657,26 @@ def page_run():
                 #pixel_input()
                 if "pixel_rat" not in st.session_state:
                     st.session_state.pixel_rat = 0.01
+                if "cell_size" not in st.session_state:
+                    st.session_state.cell_size = 0.01    
                 if "X" not in st.session_state:
-                    st.session_state.X = 0.01
+                     st.session_state.X = 0.01
                 if "Y" not in st.session_state:
-                    st.session_state.Y = 0.01
+                     st.session_state.Y = 0.01
                 pixel_rat = st.number_input(
                     'Please enter pixel edge size in microns (micron to pixel ratio)', value=st.session_state.pixel_rat)
+                cell_size = st.number_input(
+                    'Please enter the estimatedcell size in microns', value=st.session_state.cell_size)
                 size_X = st.number_input(
-                    'Please enter total pixels/microns in X direction', value=st.session_state.X)
+                    'Please enter total pixels or microns in X direction', value=st.session_state.X)
                 size_Y = st.number_input(
-                    'Please enter total pixels/microns in Y direction', value=st.session_state.Y)
+                'Please enter total pixels or microns in Y direction', value=st.session_state.Y)
                 #clicked2 = st.button('Submit')
                 #if clicked2:
                 st.session_state.pixel_rat = pixel_rat
                 st.session_state.X = size_X
                 st.session_state.Y = size_Y
-                #pixel_rat = st.session_state.pixel_rat
-                #size_X = st.session_state.X
-                #size_Y = st.session_state.Y
+                st.session_state.cell_size  = cell_size
 
             with col2:
                 pixel_kind = st.radio(
@@ -774,7 +757,7 @@ def page_run():
         for i in file_names:
             st.session_state.text2
             run_DBSCAN(i, st.session_state.text2,
-                       st.session_state.pixel_rat, st.session_state.X, st.session_state.Y, st.session_state.edge_mode, st.session_state.angel, st.session_state.save_para, st.session_state.keep_uncorr)
+                       st.session_state.pixel_rat,st.session_state.cell_size, st.session_state.X, st.session_state.Y, st.session_state.edge_mode, st.session_state.angel, st.session_state.save_para, st.session_state.keep_uncorr)
         first_file = file_names[0]
         if st.session_state.agree_log_save == 1:
             if st.session_state.edge_mode:
@@ -788,7 +771,7 @@ def page_run():
             delimiter_path = st.session_state.text2[-1]
             name_stem = i.split(delimiter_path)[-1]
             save_path = st.session_state.text2 + name_stem
-            log_df = pd.DataFrame({"Pixel Ratio": [str(st.session_state.pixel_rat)], "X-Dimension": [str(st.session_state.X)],
+            log_df = pd.DataFrame({"Pixel Ratio": [str(st.session_state.pixel_rat)], "Cell Size": [str(st.session_state.cell_size)], "X-Dimension": [str(st.session_state.X)],
                                    "Y-Dimension": [str(st.session_state.Y)], "Edge-Degree Detection": [str(edge_mode)], "Correction Angle": [str(st.session_state.angel)], "Uncorrected_Cluster_Positions": [str(keep_uncorr)]})
             output_name_log = save_path[:-4] + "_log_files.csv"
             
