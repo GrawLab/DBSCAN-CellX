@@ -15,17 +15,18 @@ warnings.filterwarnings("ignore")
 X_var = "X"
 Y_var = "Y"
 
-def get_cluster_labels(table, pixel_list):
+
+def get_cluster_labels(table, pixel_list, cell_size):
     cell_nr = len(table)
     # get covered area
     size_X = pixel_list[0]
     size_Y = pixel_list[1]
     pixel = pixel_list[2]
     # first, count cells per 20x20 µm square
-    x_steps = np.arange(0, size_X*pixel, 20*pixel)
-    y_steps = np.arange(0, size_Y*pixel, 20*pixel)
+    x_steps = np.arange(0, size_X*pixel, cell_size*pixel)
+    y_steps = np.arange(0, size_Y*pixel, cell_size*pixel)
     hist, xedges, yedges = np.histogram2d(table[X_var], table[Y_var], bins=(
-        x_steps, y_steps), range=[[0, size_X], [0, size_Y]])
+        x_steps, y_steps), range=[[0, size_X*pixel], [0, size_Y*pixel]])
     # set threshold: Count all squares with at least one cell
     over_threshold = np.transpose(hist) > 0
     covered_squares = sum(over_threshold.flatten())
@@ -122,59 +123,8 @@ def correct_cluster_label(table, angel_paramter):
     table.loc[actual_edge, 'corrected_cluster'] = 'edge'
     return(table)
 
-"""
-def count_neighborhood_cluster(table, radius_list, filter_column, option_list, distance, pixel_list):
-    pixel = pixel_list[2]
-    for radius in radius_list:
-        for option in option_list:
-            cells = table[filter_column] == option
-            rows, cols = np.where(
-                (distance[:, cells] < radius) & (distance[:, cells] != 0))
-            column = np.bincount(rows)
-            if len(column) != len(table):
-                column = np.append(column, np.zeros(
-                    len(table) - len(column))).astype(int)
-            new_colname = str(round(radius/pixel)) + 'µm_neighbors_' + option
-            table[new_colname] = column
-        total_colname = str(round(radius/pixel)) + 'µm_neighbors_total'
-        table[total_colname] = (table[str(round(radius/pixel)) + 'µm_neighbors_' + option_list[0]] +
-                                table[str(round(radius/pixel)) + 'µm_neighbors_' + option_list[1]] + table[str(round(radius/pixel)) + 'µm_neighbors_' + option_list[2]])
-"""
-"""
-def dist_to_edge(table, distance):
-    clusters = np.sort(table['cluster'].unique())
-    cluster_dict = dict()
-    distances_edge = np.zeros((len(table), 3))
-    edge_indices = table.index[table['cluster_position'] == 'edge']
-    for i in clusters:
-        #Get indices of each edge cluster cells
 
-        cluster_dict[i] = table.index[(table['cluster'] == i) & (
-            table['cluster_position'] == 'edge')].tolist()
-    for index, row in table.iterrows():
-        cluster_position = row['cluster_position']
-        if cluster_position != 'edge':
-            cluster = row['cluster']
-            if cluster != -1:
-                dist_to_own_edges = distance[index, cluster_dict[cluster]]
-                try:
-                    distances_edge[index] = [dist_to_own_edges.min(
-                    ), dist_to_own_edges.max(), dist_to_own_edges.mean()]
-                except ValueError:
-                    pass
-            elif cluster == -1:
-                dist_to_edges = distance[index, edge_indices]
-                try:
-                    distances_edge[index] = [
-                        dist_to_edges.min(), dist_to_edges.max(), dist_to_edges.mean()]
-                except ValueError:
-                    pass
-    table['min_dist_to_edge'] = distances_edge[:, 0]
-    table['max_dist_to_edge'] = distances_edge[:, 1]
-    table['mean_dist_to_edge'] = distances_edge[:, 2]
-"""
-
-def edge(table, pixel_list, angel_paramter):
+def edge(table, pixel_list, angel_paramter,cell_size):
     df = table
     edge_degrees = pd.DataFrame()
     k = 1
@@ -221,7 +171,7 @@ def edge(table, pixel_list, angel_paramter):
         position = df[[X_var, Y_var]].to_numpy()
 
         distance = distance_matrix(position, position)
-        get_cluster_labels(df, pixel_list)
+        get_cluster_labels(df, pixel_list,cell_size)
 
         clustersizes = df.groupby('Cluster_ID').count()['Nucleus number_x']
 
@@ -272,7 +222,7 @@ def edge(table, pixel_list, angel_paramter):
     return(table)
 
 
-def edit_table(files, save, pixel_list, edge_mode, angel_parameter, save_parameter, keep_uncorr):
+def edit_table(files, save, pixel_list,cell_size, edge_mode, angel_parameter, save_parameter, keep_uncorr):
     for j in files:
   
         with open(j, newline='') as csvfile:
@@ -296,7 +246,7 @@ def edit_table(files, save, pixel_list, edge_mode, angel_parameter, save_paramet
 
             position = table[[X_var, Y_var]].to_numpy()
             distance = distance_matrix(position, position)
-            paramter_output = get_cluster_labels(table, pixel_list)
+            paramter_output = get_cluster_labels(table, pixel_list,cell_size)
           
             parameters = (i,) + paramter_output
           
@@ -313,7 +263,7 @@ def edit_table(files, save, pixel_list, edge_mode, angel_parameter, save_paramet
             table = correct_cluster_label(table, angel_parameter)
 
             if edge_mode == 1:
-                table = edge(table, pixel_list, angel_parameter)
+                table = edge(table, pixel_list, angel_parameter,cell_size)
                 table = table.drop('Ind', axis=1)
             #name = j[:j.find(str("test_data_"))+11]
             delimiter_path = save[-1]
@@ -340,18 +290,19 @@ def edit_table(files, save, pixel_list, edge_mode, angel_parameter, save_paramet
         
 
 
-def main(files, save, pixel_ratio, size_x, size_y, edge_mode = 1, angel_parameter = 140, save_parameter = 1, keep_uncorr = 1):
+def main(files, save, pixel_ratio,cell_size, size_x, size_y, edge_mode = 1, angel_parameter = 140, save_parameter = 1, keep_uncorr = 1):
     st = time.time()
     print('Data will be analyzed: \n')
     print(files)
 
     pixel = pixel_ratio
     pixel = 1/pixel
+    cell_size
     X = size_x
     Y = size_y
     pixel_list = [X, Y, pixel]
     edit_table(files,save,
-               pixel_list, edge_mode, angel_parameter, save_parameter, keep_uncorr)
+               pixel_list,cell_size, edge_mode, angel_parameter, save_parameter, keep_uncorr)
     et = time.time()
     elapsed = et-st
     print("Thats it! Thanks for using DBSCAN-CellX!")
