@@ -20,7 +20,7 @@ dependencies = [
     "pandas",
     "scipy",
     'numpy',
-    "sklearn",
+    "scikit-learn",
     "argparse"
 ]
 
