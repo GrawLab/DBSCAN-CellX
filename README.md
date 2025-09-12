@@ -8,7 +8,7 @@
 
 The package relies on the well-known and frequently used density-based clustering of spatial applications with noise (DBSCAN) algorithm from Ester, M., Kriegel, H.-P., Sander, J., and Xu, X. (1996). It contains several extensions that provide an improved parameterization for DBSCAN, as well as enhanced cell classification based on their relative positioning within clusters. These extensions are especially designed for cell culture experiments. Accompanied by a user-friendly App, this python-package can directly be used by experimentalists to analyze their cell imaging data. See also
 
-* Küchenhoff L, Lukas P, Zumaran CM, Rothhaar P, Ruggieri A, Lohmann V, Höfer T, Stanifer ML, Boulant S, Talemi SR, Graw F: **“Extended methods for spatial cell classification with DBSCAN-CellX”**.
+* Küchenhoff L, Lukas P, Zumaran CM, Rothhaar P, Ruggieri A, Lohmann V, Höfer T, Stanifer ML, Boulant S, Talemi SR, Graw F: **“Extended methods for spatial cell classification with DBSCAN-CellX”** *Scientific Reports* 2023, 13(1):18868, https://doi.org/10.1038/s41598-023-45190-4.
 
 
 ## Content
